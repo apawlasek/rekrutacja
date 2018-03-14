@@ -1,0 +1,3 @@
+<div class="btn btn-sm btn-success" (click)="setState(false)" *ngIf="state.value === true">ok</div>
+<div class="btn btn-sm btn-danger" (click)="setState(null)" *ngIf="state.value === false">nieok</div>
+<div class="btn btn-sm btn-info" (click)="setState(true)" *ngIf="state.value === null">niewię</div>

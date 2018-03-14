@@ -1,0 +1,19 @@
+<div *ngFor="let category of tempData">
+  <div>{{category.name}}
+    <div *ngFor="let question of category.questionList">
+      <div>{{question.questionText}}
+        <div *ngFor="let answer of question.answerList">
+          {{answer.answerText}}
+<app-tri-state-checkbox [state]="answer.control"></app-tri-state-checkbox>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <hr>
+</div>
+
+<div class="btn btn-primary" (click)="serialize()">Zapisz</div>
+
+
+<div [innerHTML]="output"></div>
