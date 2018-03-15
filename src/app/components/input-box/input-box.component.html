@@ -1,0 +1,4 @@
+<button (click)="onShowInputBox()">+</button>
+<textarea
+       [formControl]="state"
+       *ngIf="showInputBox === true"></textarea>

@@ -14,6 +14,7 @@ export class BasicInterviewComponent implements OnInit {
   public output;
   public trueAnswers;
   public falseAnswers;
+  public activeTab = 'all';
 
   constructor(private apiService: ApiService,
               private sanitizer: DomSanitizer) {
@@ -36,24 +37,26 @@ export class BasicInterviewComponent implements OnInit {
         questionData.answerList = question.answers.map(answer => {
           return {
             answerText: answer.answerText,
-            control: new FormControl(this.jsonStateToEnum(answer.state))
+            control: new FormControl(this.jsonStateToEnum(answer.state)),
+            type: 'checkbox'
           };
         });
+        const answerInput = {
+          control: new FormControl(''),
+          type: 'input'
+        };
+        questionData.answerList.push(answerInput);
 
         return questionData;
       });
 
       return categoryData;
     });
-    // console.log(this.tempData);
-    // console.log(JSON.stringify(this.tempData, null, 4));
-    // this.serialize();
   }
 
   public checkStateForQuestion(question, state) {
     return question.answerList.some(answer => {
-      console.log('answer.control.value: ', AnswerState.Correct);
-      if (state === 'Correct'){
+      if (state === 'Correct') {
         return answer.control.value === AnswerState.Correct;
       } else if (state === 'Incorrect') {
         return answer.control.value === AnswerState.Incorrect;
@@ -67,21 +70,27 @@ export class BasicInterviewComponent implements OnInit {
   }
 
   public serialize() {
-    let output = `<h3> <p style="color:goldenrod">All answers: </p></h3>`;
-    let trueAnswers = `<h3> <p style="color:green">All true answers: </p></h3>`;
-    let falseAnswers = `<h3> <p style="color:darkred">All false answers: </p></h3>`;
+    let output = `<h2> <p style="color:goldenrod">All answers: </p></h2>`;
+    let trueAnswers = `<h2> <p style="color:green">All correct answers: </p></h2>`;
+    let falseAnswers = `<h2> <p style="color:darkred">All incorrect answers: </p></h2>`;
 
     this.tempData.forEach(category => {
       output += `<div><h3><p style="color:dimgrey"> ${category.name}</p></h3></div>`;
       category.questionList.forEach((question) => {
         output += `<h4>${question.questionText}</h4>`;
         question.answerList.forEach(answer => {
-          output += `<div><p style="text-indent: 10%; "><i>${answer.answerText}</i><strong> (${answer.control.value})</strong></p></div>`;
+          if (answer.type === 'checkbox') {
+            output += `<div><p style="text-indent: 5%; "><i>${answer.answerText}</i><strong> (${answer.control.value})</strong></p></div>`;
+          } else if (answer.type === 'input') {
+            if (answer.control.value !== '') {
+              output += `<div><p style="text-indent: 5%; ">${answer.control.value}</p></div>`;
+            }
+          }
         });
       });
-
     });
 
+// correct answers:
     this.tempData.forEach(category => {
       if (this.checkStateForCategory(category, 'Correct')) {
         trueAnswers += `<div><h3><p style="color:dimgrey"> ${category.name}</p></h3></div>`;
@@ -91,13 +100,14 @@ export class BasicInterviewComponent implements OnInit {
           }
           question.answerList.forEach(answer => {
             if (answer.control.value === AnswerState.Correct) {
-              trueAnswers += `<div><p><i>${answer.answerText}</i></p></div>`;
+              trueAnswers += `<div><p style="text-indent: 5%; "><i>${answer.answerText}</i></p></div>`;
             }
           });
         });
       }
     });
 
+// incorrect answers:
     this.tempData.forEach(category => {
       if (this.checkStateForCategory(category, 'Incorrect')) {
         falseAnswers += `<div><h3><p style="color:dimgrey"> ${category.name}</p></h3></div>`;
@@ -107,7 +117,7 @@ export class BasicInterviewComponent implements OnInit {
           }
           question.answerList.forEach(answer => {
             if (answer.control.value === AnswerState.Incorrect) {
-              falseAnswers += `<div><p><i>${answer.answerText}</i></p></div>`;
+              falseAnswers += `<div><p style="text-indent: 5%; "><i>${answer.answerText}</i></p></div>`;
             }
           });
         });
@@ -133,7 +143,8 @@ export class BasicInterviewComponent implements OnInit {
     }
   }
 
+  public setTabTo(tabName) {
+    this.activeTab = tabName;
+  }
 }
 
-// trueAnswers += `<h5>${question.questionText}</h5>`
-// <div><p><i>${answer.answerText}</i></p></div>

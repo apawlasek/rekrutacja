@@ -18,7 +18,7 @@ export class ApiService {
         {
           'questionText': '2. Wyjaśnij czym są cookies?',
           'answers': [
-            {'answerText': 'Wie co to jest', 'state': true},
+            {'answerText': 'Wie co to jest', 'state': null},
             {'answerText': 'Potrafi wyjasnic', 'state': true},
             {'answerText': 'To zależy', 'state': false}
           ]
@@ -40,8 +40,8 @@ export class ApiService {
           'questionText': '4. Opisz czym jest kolejka zdarzeń / pętla zdarzeń (event loop)?',
           'answers': [
             {'answerText': 'Wie co to jest', 'state': false},
-            {'answerText': 'Potrafi wyjasnic', 'state': false},
-            {'answerText': 'To zależy', 'state': false}
+            {'answerText': 'Potrafi wyjasnic', 'state': null},
+            {'answerText': 'To zależy', 'state': true}
           ]
         },
         {
