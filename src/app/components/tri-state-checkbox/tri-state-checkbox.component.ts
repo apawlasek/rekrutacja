@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormControl} from '@angular/forms';
+import {AnswerState} from '../../models/answer-state';
 
 @Component({
   selector: 'app-tri-state-checkbox',
@@ -9,13 +10,15 @@ import {FormControl} from '@angular/forms';
 export class TriStateCheckboxComponent implements OnInit {
   @Input() public state: FormControl;
 
+  public answerState = AnswerState;
+
   constructor() {
   }
 
   public ngOnInit() {
   }
 
-  public setState(value) {
+  public setState(value: AnswerState) {
     this.state.setValue(value);
   }
 }

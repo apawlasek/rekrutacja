@@ -8,7 +8,7 @@ export class ApiService {
       'categoryName': 'JavaScript',
       'questions': [
         {
-          'questionText': 'Jak zrobić, aby na kliknięcie labelki checkboxa, zaznaczał się dany checkbox?',
+          'questionText': '1. Jak zrobić, aby na kliknięcie labelki checkboxa, zaznaczał się dany checkbox?',
           'answers': [
             {'answerText': 'Wie co to jest', 'state': true},
             {'answerText': 'Potrafi wyjasnic', 'state': false},
@@ -16,7 +16,7 @@ export class ApiService {
           ]
         },
         {
-          'questionText': 'Wyjaśnij czym są cookies?',
+          'questionText': '2. Wyjaśnij czym są cookies?',
           'answers': [
             {'answerText': 'Wie co to jest', 'state': true},
             {'answerText': 'Potrafi wyjasnic', 'state': true},
@@ -24,7 +24,7 @@ export class ApiService {
           ]
         },
         {
-          'questionText': 'Wyjaśnij czym są cookies?',
+          'questionText': '3. Wyjaśnij czym są cookies?',
           'answers': [
             {'answerText': 'Wie co to jest', 'state': true},
             {'answerText': 'Potrafi wyjasnic', 'state': true},
@@ -37,7 +37,7 @@ export class ApiService {
       'categoryName': 'HTML',
       'questions': [
         {
-          'questionText': 'Opisz czym jest kolejka zdarzeń / pętla zdarzeń (event loop)?',
+          'questionText': '4. Opisz czym jest kolejka zdarzeń / pętla zdarzeń (event loop)?',
           'answers': [
             {'answerText': 'Wie co to jest', 'state': false},
             {'answerText': 'Potrafi wyjasnic', 'state': false},
@@ -45,7 +45,7 @@ export class ApiService {
           ]
         },
         {
-          'questionText': 'Opisz czym jest kolejka zdarzeń / pętla zdarzeń (event loop)?',
+          'questionText': '5. Opisz czym jest kolejka zdarzeń / pętla zdarzeń (event loop)?',
           'answers': [
             {'answerText': 'Wie co to jest', 'state': false},
             {'answerText': 'Potrafi wyjasnic', 'state': false},

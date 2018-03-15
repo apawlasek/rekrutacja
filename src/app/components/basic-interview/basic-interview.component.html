@@ -4,7 +4,7 @@
       <div>{{question.questionText}}
         <div *ngFor="let answer of question.answerList">
           {{answer.answerText}}
-<app-tri-state-checkbox [state]="answer.control"></app-tri-state-checkbox>
+          <app-tri-state-checkbox [state]="answer.control"></app-tri-state-checkbox>
         </div>
       </div>
 
@@ -17,3 +17,7 @@
 
 
 <div [innerHTML]="output"></div>
+<hr>
+<div [innerHTML]="trueAnswers"></div>
+<hr>
+<div [innerHTML]="falseAnswers"></div>
