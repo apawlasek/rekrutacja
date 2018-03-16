@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {ApiService} from '../../services/api.service';
-import {FormControl} from '@angular/forms';
 import {DomSanitizer} from '@angular/platform-browser';
 import {AnswerState} from '../../models/answer-state';
+import {DisplayDataService} from '../../services/display-data.service';
 
 @Component({
   selector: 'app-basic-interview',
@@ -15,44 +15,20 @@ export class BasicInterviewComponent implements OnInit {
   public trueAnswers;
   public falseAnswers;
   public activeTab = 'all';
+  public allAnswersHeader = `<h2> <p style="color:goldenrod">All answers: </p></h2>`;
+  public falseAnswersHeader = `<h2> <p style="color:darkred">Incorrect answers: </p></h2>`;
+  public trueAnswersHeader = `<h2> <p style="color:green">Correct answers: </p></h2>`;
 
   constructor(private apiService: ApiService,
-              private sanitizer: DomSanitizer) {
+              private sanitizer: DomSanitizer,
+              private displayDataService: DisplayDataService) {
   }
 
   public ngOnInit() {
-    const jsonData = this.apiService.getData();
-    this.tempData = jsonData.map(category => {
-      const categoryData = {
-        name: category.categoryName,
-        questionList: [],
-      };
-
-      categoryData.questionList = category.questions.map(question => {
-        const questionData = {
-          questionText: question.questionText,
-          answerList: [],
-        };
-
-        questionData.answerList = question.answers.map(answer => {
-          return {
-            answerText: answer.answerText,
-            control: new FormControl(this.jsonStateToEnum(answer.state)),
-            type: 'checkbox'
-          };
-        });
-        const answerInput = {
-          control: new FormControl(''),
-          type: 'input'
-        };
-        questionData.answerList.push(answerInput);
-
-        return questionData;
-      });
-
-      return categoryData;
-    });
+    this.displayDataService.displayQuestionnaire();
+    this.tempData = this.displayDataService.tempData;
   }
+
 
   public checkStateForQuestion(question, state) {
     return question.answerList.some(answer => {
@@ -69,94 +45,62 @@ export class BasicInterviewComponent implements OnInit {
     return category.questionList.some(question => this.checkStateForQuestion(question, state));
   }
 
-  public serialize() {
-    let output = `<h2> <p style="color:goldenrod">All answers: </p></h2>`;
-    let trueAnswers = `<h2> <p style="color:green">Correct answers: </p></h2>`;
-    let falseAnswers = `<h2> <p style="color:darkred">Incorrect answers: </p></h2>`;
+  public filterAnswers(answerTypeString, state: AnswerState) {
 
-// all answers:
-    this.tempData.forEach(category => {
-      output += `<div><h3><p style="color:dimgrey"> ${category.name}</p></h3></div>`;
-      category.questionList.forEach((question) => {
-        output += `<h4>${question.questionText}</h4>`;
-        question.answerList.forEach(answer => {
-          if (answer.type === 'checkbox') {
-            output += `<div><p style="text-indent: 5%; "><i>${answer.answerText}</i><strong> (${answer.control.value})</strong></p></div>`;
-          } else if (answer.type === 'input') {
-            if (answer.control.value !== '') {
-              output += `<div><p style="text-indent: 5%; ">${answer.control.value}</p></div>`;
-            }
+    this.displayDataService.tempData.forEach(category => {
+
+      if (state === AnswerState.Any || this.checkStateForCategory(category, state)) {
+        answerTypeString += `<div><h3><p style="color:dimgrey"> ${category.name}</p></h3></div>`;
+        category.questionList.forEach((question) => {
+          if (state === AnswerState.Any || this.checkStateForQuestion(question, state)) {
+            answerTypeString += `<h5>${question.questionText}</h5>`;
+            question.answerList.forEach(answer => {
+              if (answer.type === 'checkbox') {
+                if (state === AnswerState.Any || answer.control.value === state) {
+                  answerTypeString += `<div><p style="text-indent: 5%; ">
+                  <i>${answer.answerText}</i><strong> (${answer.control.value})</strong></p></div>`;
+                }
+              } else if (answer.type === 'input') {
+                if (answer.control.value !== '') {
+                  answerTypeString += `<div><p style="text-indent: 5%; ">${answer.control.value}</p></div>`;
+
+                }
+              }
+            });
           }
         });
-      });
+      }
     });
+
+    return answerTypeString;
+  }
+
+  public serialize() {
+// all answers:
+    const allAnswers = this.filterAnswers(this.allAnswersHeader, AnswerState.Any);
 
 // correct answers:
-    this.tempData.forEach(category => {
-      if (this.checkStateForCategory(category, 'Correct')) {
-        trueAnswers += `<div><h3><p style="color:dimgrey"> ${category.name}</p></h3></div>`;
-        category.questionList.forEach((question) => {
-          if (this.checkStateForQuestion(question, 'Correct')) {
-            trueAnswers += `<h5>${question.questionText}</h5>`;
-            question.answerList.forEach(answer => {
-              if (answer.type === 'checkbox') {
-                if (answer.control.value === AnswerState.Correct) {
-                  trueAnswers += `<div><p style="text-indent: 5%; "><i>${answer.answerText}</i>
-<strong> (${answer.control.value})</strong></p></div>`;
-                }
-              } else if (answer.type === 'input') {
-                if (answer.control.value !== '') {
-                  trueAnswers += `<div><p style="text-indent: 5%; ">${answer.control.value}</p></div>`;
-                }
-              }
-            });
-          }
-        });
-      }
-    });
+    const trueAnswers = this.filterAnswers(this.trueAnswersHeader, AnswerState.Correct);
 
 // incorrect answers:
-    this.tempData.forEach(category => {
-      if (this.checkStateForCategory(category, 'Incorrect')) {
-        falseAnswers += `<div><h3><p style="color:dimgrey"> ${category.name}</p></h3></div>`;
-        category.questionList.forEach((question) => {
-          if (this.checkStateForQuestion(question, 'Incorrect')) {
-            falseAnswers += `<h5>${question.questionText}</h5>`;
-            question.answerList.forEach(answer => {
-              if (answer.type === 'checkbox') {
-                if (answer.control.value === AnswerState.Incorrect) {
-                  falseAnswers += `<div><p style="text-indent: 5%; "><i>${answer.answerText}</i>
-<strong> (${answer.control.value})</strong></p></div>`;
-                }
-              } else if (answer.type === 'input') {
-                if (answer.control.value !== '') {
-                  falseAnswers += `<div><p style="text-indent: 5%; ">${answer.control.value}</p></div>`;
-                }
-              }
-            });
-          }
-        });
-      }
-    });
+    const falseAnswers = this.filterAnswers(this.falseAnswersHeader, AnswerState.Incorrect);
 
-    this.output = this.sanitizer.bypassSecurityTrustHtml(output);
+    this.output = this.sanitizer.bypassSecurityTrustHtml(allAnswers);
     this.trueAnswers = this.sanitizer.bypassSecurityTrustHtml(trueAnswers);
     this.falseAnswers = this.sanitizer.bypassSecurityTrustHtml(falseAnswers);
-
-
   }
 
-  public jsonStateToEnum(state: boolean | null): AnswerState {
-    if (state === true) {
-      return AnswerState.Correct;
-    }
-    if (state === false) {
-      return AnswerState.Incorrect;
-    }
-    if (state === null) {
-      return AnswerState.Unasked;
-    }
-  }
+  // public jsonStateToEnum(state: boolean | null): AnswerState {
+  //   if (state === true) {
+  //     return AnswerState.Correct;
+  //   }
+  //   if (state === false) {
+  //     return AnswerState.Incorrect;
+  //   }
+  //   if (state === null) {
+  //     return AnswerState.Unasked;
+  //   }
+  // }
 
   public setTabTo(tabName) {
     this.activeTab = tabName;

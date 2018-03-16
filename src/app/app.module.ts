@@ -8,6 +8,7 @@ import {ApiService} from './services/api.service';
 import { TriStateCheckboxComponent } from './components/tri-state-checkbox/tri-state-checkbox.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import { InputBoxComponent } from './components/input-box/input-box.component';
+import {DisplayDataService} from './services/display-data.service';
 
 
 @NgModule({
@@ -21,7 +22,7 @@ import { InputBoxComponent } from './components/input-box/input-box.component';
     BrowserModule,
     ReactiveFormsModule
   ],
-  providers: [ApiService],
+  providers: [ApiService, DisplayDataService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

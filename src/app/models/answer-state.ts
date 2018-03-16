@@ -1,5 +1,6 @@
 export enum AnswerState {
   Correct = 'Correct',
   Incorrect = 'Incorrect',
-  Unasked = 'Unasked'
+  Unasked = 'Unasked',
+  Any = 'Any',
 }
