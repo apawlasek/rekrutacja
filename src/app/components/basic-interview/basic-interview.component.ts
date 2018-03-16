@@ -3,6 +3,7 @@ import {ApiService} from '../../services/api.service';
 import {DomSanitizer} from '@angular/platform-browser';
 import {AnswerState} from '../../models/answer-state';
 import {DisplayDataService} from '../../services/display-data.service';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-basic-interview',
@@ -30,77 +31,72 @@ export class BasicInterviewComponent implements OnInit {
   }
 
 
-  public checkStateForQuestion(question, state) {
-    return question.answerList.some(answer => {
-      if (state === 'Correct') {
-        return answer.control.value === AnswerState.Correct;
-      } else if (state === 'Incorrect') {
-        return answer.control.value === AnswerState.Incorrect;
-      }
-
-    });
-  }
-
-  public checkStateForCategory(category, state) {
-    return category.questionList.some(question => this.checkStateForQuestion(question, state));
-  }
+  // public filterAnswers(answerTypeString, state: AnswerState) {
+  //
+  //   this.displayDataService.tempData.forEach(category => {
+  //
+  //     if (state === AnswerState.Any || this.checkStateForCategory(category, state)) {
+  //       answerTypeString += `<div><h3><p style="color:dimgrey"> ${category.name}</p></h3></div>`;
+  //       category.questionList.forEach((question) => {
+  //         if (state === AnswerState.Any || this.checkStateForQuestion(question, state)) {
+  //           answerTypeString += `<h5>${question.questionText}</h5>`;
+  //           question.answerList.forEach(answer => {
+  //             if (answer.type === 'checkbox') {
+  //               if (state === AnswerState.Any || answer.control.value === state) {
+  //                 answerTypeString += `<div><p style="text-indent: 5%; ">
+  //                 <i>${answer.answerText}</i><strong> (${answer.control.value})</strong></p></div>`;
+  //               }
+  //             } else if (answer.type === 'input') {
+  //               if (answer.control.value !== '') {
+  //                 answerTypeString += `<div><p style="text-indent: 5%; ">${answer.control.value}</p></div>`;
+  //
+  //               }
+  //             }
+  //           });
+  //         }
+  //       });
+  //     }
+  //   });
+  //
+  //   return answerTypeString;
+  // }
 
   public filterAnswers(answerTypeString, state: AnswerState) {
+    const categoryList = _.cloneDeep(this.displayDataService.tempData);
 
-    this.displayDataService.tempData.forEach(category => {
-
-      if (state === AnswerState.Any || this.checkStateForCategory(category, state)) {
-        answerTypeString += `<div><h3><p style="color:dimgrey"> ${category.name}</p></h3></div>`;
-        category.questionList.forEach((question) => {
-          if (state === AnswerState.Any || this.checkStateForQuestion(question, state)) {
-            answerTypeString += `<h5>${question.questionText}</h5>`;
-            question.answerList.forEach(answer => {
-              if (answer.type === 'checkbox') {
-                if (state === AnswerState.Any || answer.control.value === state) {
-                  answerTypeString += `<div><p style="text-indent: 5%; ">
-                  <i>${answer.answerText}</i><strong> (${answer.control.value})</strong></p></div>`;
-                }
-              } else if (answer.type === 'input') {
-                if (answer.control.value !== '') {
-                  answerTypeString += `<div><p style="text-indent: 5%; ">${answer.control.value}</p></div>`;
-
-                }
-              }
-            });
+    return categoryList.filter((category) => {
+      category.questionList = category.questionList.filter((question) => {
+        question.answerList = question.answerList.filter((answer) => {
+          if (answer.type === 'checkbox' && (state === AnswerState.Any || answer.control.value === state)) {
+            return true;
+          } else if (answer.type === 'input' && answer.control.value !== '') {
+            return true;
           }
+          return false;
         });
-      }
-    });
 
-    return answerTypeString;
+        return question.answerList.length !== 0;
+      });
+
+      return category.questionList.length !== 0;
+    });
   }
 
   public serialize() {
 // all answers:
-    const allAnswers = this.filterAnswers(this.allAnswersHeader, AnswerState.Any);
+//     const allAnswers = this.filterAnswers(this.allAnswersHeader, AnswerState.Any);
 
 // correct answers:
     const trueAnswers = this.filterAnswers(this.trueAnswersHeader, AnswerState.Correct);
 
 // incorrect answers:
-    const falseAnswers = this.filterAnswers(this.falseAnswersHeader, AnswerState.Incorrect);
+//     const falseAnswers = this.filterAnswers(this.falseAnswersHeader, AnswerState.Incorrect);
 
-    this.output = this.sanitizer.bypassSecurityTrustHtml(allAnswers);
+    // this.output = this.sanitizer.bypassSecurityTrustHtml(allAnswers);
     this.trueAnswers = this.sanitizer.bypassSecurityTrustHtml(trueAnswers);
-    this.falseAnswers = this.sanitizer.bypassSecurityTrustHtml(falseAnswers);
+    // this.falseAnswers = this.sanitizer.bypassSecurityTrustHtml(falseAnswers);
   }
 
-  // public jsonStateToEnum(state: boolean | null): AnswerState {
-  //   if (state === true) {
-  //     return AnswerState.Correct;
-  //   }
-  //   if (state === false) {
-  //     return AnswerState.Incorrect;
-  //   }
-  //   if (state === null) {
-  //     return AnswerState.Unasked;
-  //   }
-  // }
 
   public setTabTo(tabName) {
     this.activeTab = tabName;
