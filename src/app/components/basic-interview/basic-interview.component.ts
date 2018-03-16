@@ -71,9 +71,10 @@ export class BasicInterviewComponent implements OnInit {
 
   public serialize() {
     let output = `<h2> <p style="color:goldenrod">All answers: </p></h2>`;
-    let trueAnswers = `<h2> <p style="color:green">All correct answers: </p></h2>`;
-    let falseAnswers = `<h2> <p style="color:darkred">All incorrect answers: </p></h2>`;
+    let trueAnswers = `<h2> <p style="color:green">Correct answers: </p></h2>`;
+    let falseAnswers = `<h2> <p style="color:darkred">Incorrect answers: </p></h2>`;
 
+// all answers:
     this.tempData.forEach(category => {
       output += `<div><h3><p style="color:dimgrey"> ${category.name}</p></h3></div>`;
       category.questionList.forEach((question) => {
@@ -97,12 +98,19 @@ export class BasicInterviewComponent implements OnInit {
         category.questionList.forEach((question) => {
           if (this.checkStateForQuestion(question, 'Correct')) {
             trueAnswers += `<h5>${question.questionText}</h5>`;
+            question.answerList.forEach(answer => {
+              if (answer.type === 'checkbox') {
+                if (answer.control.value === AnswerState.Correct) {
+                  trueAnswers += `<div><p style="text-indent: 5%; "><i>${answer.answerText}</i>
+<strong> (${answer.control.value})</strong></p></div>`;
+                }
+              } else if (answer.type === 'input') {
+                if (answer.control.value !== '') {
+                  trueAnswers += `<div><p style="text-indent: 5%; ">${answer.control.value}</p></div>`;
+                }
+              }
+            });
           }
-          question.answerList.forEach(answer => {
-            if (answer.control.value === AnswerState.Correct) {
-              trueAnswers += `<div><p style="text-indent: 5%; "><i>${answer.answerText}</i></p></div>`;
-            }
-          });
         });
       }
     });
@@ -114,12 +122,19 @@ export class BasicInterviewComponent implements OnInit {
         category.questionList.forEach((question) => {
           if (this.checkStateForQuestion(question, 'Incorrect')) {
             falseAnswers += `<h5>${question.questionText}</h5>`;
+            question.answerList.forEach(answer => {
+              if (answer.type === 'checkbox') {
+                if (answer.control.value === AnswerState.Incorrect) {
+                  falseAnswers += `<div><p style="text-indent: 5%; "><i>${answer.answerText}</i>
+<strong> (${answer.control.value})</strong></p></div>`;
+                }
+              } else if (answer.type === 'input') {
+                if (answer.control.value !== '') {
+                  falseAnswers += `<div><p style="text-indent: 5%; ">${answer.control.value}</p></div>`;
+                }
+              }
+            });
           }
-          question.answerList.forEach(answer => {
-            if (answer.control.value === AnswerState.Incorrect) {
-              falseAnswers += `<div><p style="text-indent: 5%; "><i>${answer.answerText}</i></p></div>`;
-            }
-          });
         });
       }
     });
