@@ -6,15 +6,13 @@ import {AnswerState} from '../models/answer-state';
 
 @Injectable()
 export class DisplayDataService {
-  public tempData;
 
   constructor(private apiService: ApiService) {
     console.log('odpaliłem');
   }
 
-  public displayQuestionnaire() {
-    const jsonData = this.apiService.getData();
-    this.tempData = jsonData.map(category => {
+  public displayQuestionnaire(jsonData) {
+    return jsonData.map(category => {
       const categoryData = {
         name: category.categoryName,
         questionList: [],

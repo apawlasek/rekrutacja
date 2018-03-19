@@ -1,9 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {ApiService} from '../../services/api.service';
-import {DomSanitizer} from '@angular/platform-browser';
 import {AnswerState} from '../../models/answer-state';
 import {DisplayDataService} from '../../services/display-data.service';
-import * as _ from 'lodash';
+import {DisplayOutputService} from '../../services/display-output.service';
 
 @Component({
   selector: 'app-basic-interview',
@@ -12,22 +11,19 @@ import * as _ from 'lodash';
 })
 export class BasicInterviewComponent implements OnInit {
   public tempData;
-  public output;
+  public allAnswers;
   public trueAnswers;
   public falseAnswers;
+  public falseAnswers;
   public activeTab = 'all';
-  public allAnswersHeader = `<h2> <p style="color:goldenrod">All answers: </p></h2>`;
-  public falseAnswersHeader = `<h2> <p style="color:darkred">Incorrect answers: </p></h2>`;
-  public trueAnswersHeader = `<h2> <p style="color:green">Correct answers: </p></h2>`;
 
   constructor(private apiService: ApiService,
-              private sanitizer: DomSanitizer,
-              private displayDataService: DisplayDataService) {
+              private displayDataService: DisplayDataService,
+              private displayOutputService: DisplayOutputService) {
   }
 
   public ngOnInit() {
-    this.displayDataService.displayQuestionnaire();
-    this.tempData = this.displayDataService.tempData;
+    this.tempData = this.displayDataService.displayQuestionnaire(this.apiService.getData());
   }
 
 
@@ -61,40 +57,36 @@ export class BasicInterviewComponent implements OnInit {
   //   return answerTypeString;
   // }
 
-  public filterAnswers(answerTypeString, state: AnswerState) {
-    const categoryList = _.cloneDeep(this.displayDataService.tempData);
-
-    return categoryList.filter((category) => {
-      category.questionList = category.questionList.filter((question) => {
-        question.answerList = question.answerList.filter((answer) => {
-          if (answer.type === 'checkbox' && (state === AnswerState.Any || answer.control.value === state)) {
-            return true;
-          } else if (answer.type === 'input' && answer.control.value !== '') {
-            return true;
-          }
-          return false;
-        });
-
-        return question.answerList.length !== 0;
-      });
-
-      return category.questionList.length !== 0;
-    });
-  }
+  // public filterAnswers(answerTypeString, state: AnswerState) {
+  //   const categoryList = _.cloneDeep(this.displayDataService.tempData);
+  //
+  //   return categoryList.filter((category) => {
+  //     category.questionList = category.questionList.filter((question) => {
+  //       question.answerList = question.answerList.filter((answer) => {
+  //         if (answer.type === 'checkbox' && (state === AnswerState.Any || answer.control.value === state)) {
+  //           return true;
+  //         } else if (answer.type === 'input' && answer.control.value !== '') {
+  //           return true;
+  //         }
+  //         return false;
+  //       });
+  //
+  //       return question.answerList.length !== 0;
+  //     });
+  //
+  //     return category.questionList.length !== 0;
+  //
+  //   });
+  // }
 
   public serialize() {
 // all answers:
 //     const allAnswers = this.filterAnswers(this.allAnswersHeader, AnswerState.Any);
 
-// correct answers:
-    const trueAnswers = this.filterAnswers(this.trueAnswersHeader, AnswerState.Correct);
+    this.allAnswers = this.displayOutputService.filterAnswers(this.tempData, AnswerState.Any);
+    this.trueAnswers = this.displayOutputService.filterAnswers(this.tempData, AnswerState.Correct);
+    this.falseAnswers = this.displayOutputService.filterAnswers(this.tempData, AnswerState.Incorrect);
 
-// incorrect answers:
-//     const falseAnswers = this.filterAnswers(this.falseAnswersHeader, AnswerState.Incorrect);
-
-    // this.output = this.sanitizer.bypassSecurityTrustHtml(allAnswers);
-    this.trueAnswers = this.sanitizer.bypassSecurityTrustHtml(trueAnswers);
-    // this.falseAnswers = this.sanitizer.bypassSecurityTrustHtml(falseAnswers);
   }
 
 

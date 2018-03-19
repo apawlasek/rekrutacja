@@ -9,6 +9,8 @@ import { TriStateCheckboxComponent } from './components/tri-state-checkbox/tri-s
 import {ReactiveFormsModule} from '@angular/forms';
 import { InputBoxComponent } from './components/input-box/input-box.component';
 import {DisplayDataService} from './services/display-data.service';
+import {DisplayOutputService} from './services/display-output.service';
+import { BasicInterviewResultComponent } from './components/basic-interview-result/basic-interview-result.component';
 
 
 @NgModule({
@@ -16,13 +18,14 @@ import {DisplayDataService} from './services/display-data.service';
     AppComponent,
     BasicInterviewComponent,
     TriStateCheckboxComponent,
-    InputBoxComponent
+    InputBoxComponent,
+    BasicInterviewResultComponent
   ],
   imports: [
     BrowserModule,
     ReactiveFormsModule
   ],
-  providers: [ApiService, DisplayDataService],
+  providers: [ApiService, DisplayDataService, DisplayOutputService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

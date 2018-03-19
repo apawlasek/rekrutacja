@@ -60,6 +60,7 @@ export class ApiService {
   }
 
   public getData() {
-    return this.categories.slice();
+    const jsonData = this.categories.slice();
+    return jsonData;
   }
 }
