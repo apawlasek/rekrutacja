@@ -9,11 +9,13 @@ export class InputBoxComponent implements OnInit {
   public showInputBox = false;
   @Input() public state;
 
-  constructor() { }
+  constructor() {
+  }
 
   public ngOnInit() {
   }
-public onShowInputBox() {
+
+  public onShowInputBox() {
     this.showInputBox = !this.showInputBox;
-}
+  }
 }

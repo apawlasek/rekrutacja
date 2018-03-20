@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
-import {Category} from './api.model';
+import {SerializedCategory} from '../models/api.model';
 
 @Injectable()
 export class ApiService {
-  public categories: Category[] = [
+  public categories: SerializedCategory[] = [
     {
       'categoryName': 'JavaScript',
       'questions': [
@@ -11,8 +11,7 @@ export class ApiService {
           'questionText': '1. Jak zrobić, aby na kliknięcie labelki checkboxa, zaznaczał się dany checkbox?',
           'answers': [
             {'answerText': 'Wie co to jest', 'state': true},
-            {'answerText': 'Potrafi wyjasnic', 'state': false},
-            {'answerText': 'To zależy', 'state': true}
+            {'answerText': 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores aspernatur illo minima non quaerat, voluptate.', 'state': false}
           ]
         },
         {
@@ -56,11 +55,4 @@ export class ApiService {
     }
   ];
 
-  constructor() {
-  }
-
-  public getData() {
-    const jsonData = this.categories.slice();
-    return jsonData;
-  }
 }

@@ -1,12 +1,12 @@
 <div *ngIf="data && data.length != 0"><h3 [ngStyle]="{color: options.titleColor}">{{options.title}}</h3><hr></div>
 <div *ngFor="let category of data">
-  <h4 style="color:dimgrey">{{category.name}}</h4>
+  <h4 style="color:dimgrey">{{category.categoryName}}</h4>
   <hr>
   <div *ngFor="let question of category.questionList">
     <h6>{{question.questionText}}</h6>
     <ul *ngFor="let answer of question.answerList">
 
-      <li *ngIf="answer.type === 'checkbox'">{{answer.answerText}} <span [ngStyle]="{color: colors[answer.control.value]}" *ngIf="options.showAnswerState">({{answer.control.value}})</span></li>
+      <li *ngIf="answer.type === 'checkbox'">{{answer.answerText}} <span [ngStyle]="{color: colors[answer.control.value.toLowerCase()]}" *ngIf="options.showAnswerState">({{answer.control.value}})</span></li>
       <li *ngIf="answer.type === 'input'">dodatkowe informacje: {{answer.control.value}}</li>
     </ul>
   </div>

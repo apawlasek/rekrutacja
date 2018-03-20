@@ -1,0 +1,25 @@
+.answer-item {
+  border: 1px solid lightgray;
+}
+
+.question-item {
+  padding: 0.5rem 0 0;
+
+  &:nth-child(odd) {
+    background: #dee9ef;
+  }
+}
+
+
+.bottom-separator {
+  margin-bottom: 0.5rem;
+
+  &:after {
+    content: '';
+    width: calc(100% - 30px);
+    height: 1px;
+    background: #ced4da;
+    position: absolute;
+    bottom: 0;
+  }
+}

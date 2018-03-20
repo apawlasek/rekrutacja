@@ -1,4 +1,5 @@
 import {Component, Input, } from '@angular/core';
+import {Options} from '../../models/options.model';
 
 @Component({
   selector: 'app-basic-interview-result',
@@ -7,11 +8,10 @@ import {Component, Input, } from '@angular/core';
 })
 export class BasicInterviewResultComponent {
   @Input() public data;
-  @Input() public options;
+  @Input() public options: Options;
   public colors = {
-    Correct: 'forestgreen',
-    Incorrect: 'darkred',
-    Unasked: 'grey',
-    Other: 'grey',
+    correct: 'forestgreen',
+    incorrect: 'darkred',
+    unasked: 'grey',
   };
 }
