@@ -1,3 +1,3 @@
 <div class="btn btn-block btn-sm btn-success" (click)="setState(answerState.Incorrect)" *ngIf="state.value === answerState.Correct">Dobrze</div>
 <div class="btn btn-block btn-sm btn-danger" (click)="setState(answerState.Unasked)" *ngIf="state.value === answerState.Incorrect">Żle</div>
-<div class="btn btn-block btn-sm btn-info" (click)="setState(answerState.Correct)" *ngIf="state.value === answerState.Unasked">Niezadane</div>
+<div class="btn btn-block btn-sm btn-outline-info" (click)="setState(answerState.Correct)" *ngIf="state.value === answerState.Unasked">Niezadane</div>

@@ -22,16 +22,16 @@ export class BasicInterviewComponent implements OnInit {
 
   public ngOnInit() {
     this.readyQuestions = this.dataManipulationService.getQuestionnaire(this.dataManipulationService.getData());
-    setInterval(() => {
-      this.serialize();
-    }, 60000);
+    // setInterval(() => {
+    //   this.serialize();
+    // }, 60000);
   }
 
   public serialize() {
 
-    this.allAnswers = this.dataManipulationService.filterAnswers(this.readyQuestions, AnswerState.Any);
-    this.trueAnswers = this.dataManipulationService.filterAnswers(this.readyQuestions, AnswerState.Correct);
-    this.falseAnswers = this.dataManipulationService.filterAnswers(this.readyQuestions, AnswerState.Incorrect);
+    this.allAnswers = this.dataManipulationService.filterAnswers(this.readyQuestions, [AnswerState.Correct, AnswerState.Incorrect]);
+    this.trueAnswers = this.dataManipulationService.filterAnswers(this.readyQuestions, [AnswerState.Correct]);
+    this.falseAnswers = this.dataManipulationService.filterAnswers(this.readyQuestions, [AnswerState.Incorrect]);
 
   }
 

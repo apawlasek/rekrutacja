@@ -14,13 +14,14 @@ export class DataManipulationService {
   constructor(private apiService: ApiService) {
   }
 
-  public filterAnswers(tempData, state: AnswerState) {
+  public filterAnswers(tempData, states: AnswerState[]) {
     const categoryList = _.cloneDeep(tempData);
 
+    // console.log(`state`, states);
     this.filteredAnswers = categoryList.filter((category) => {
       category.questionList = category.questionList.filter((question) => {
         question.answerList = question.answerList.filter((answer) => {
-          if (answer.type === 'checkbox' && (state === AnswerState.Any || answer.control.value === state)) {
+          if (answer.type === 'checkbox' && _.includes(states, answer.control.value)) {
             return true;
           } else if (answer.type === 'input' && answer.control.value !== '') {
             return true;
@@ -34,7 +35,7 @@ export class DataManipulationService {
       return category.questionList.length !== 0;
 
     });
-    console.log('filtered answers ' + state, this.filteredAnswers);
+    console.log('filtered answers ' + states, this.filteredAnswers);
     return this.filteredAnswers;
 
   }

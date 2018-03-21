@@ -29,14 +29,14 @@
 
 <ul class="nav nav-tabs">
   <li class="nav-item ">
-    <span class="nav-link " (click)="setTabTo('all')" [ngClass]="{active: activeTab === 'all'}">All</span>
+    <span class="nav-link " (click)="setTabTo('all')" [ngClass]="{active: activeTab === 'all'}">Wszystkie</span>
   </li>
   <li class="nav-item">
-    <span class="nav-link " (click)="setTabTo('correct')" [ngClass]="{active: activeTab === 'correct'}">Correct</span>
+    <span class="nav-link " (click)="setTabTo('correct')" [ngClass]="{active: activeTab === 'correct'}">Poprawne</span>
   </li>
   <li class="nav-item">
     <span class="nav-link" (click)="setTabTo('incorrect')"
-          [ngClass]="{active: activeTab === 'incorrect'}">Incorrect</span>
+          [ngClass]="{active: activeTab === 'incorrect'}">Niepoprawne</span>
   </li>
 </ul>
 <app-basic-interview-result *ngIf="activeTab === 'all'"
