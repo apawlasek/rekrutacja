@@ -5,24 +5,25 @@
         {{question.questionText}}
       </div>
       <div class="col">
-
-        <ng-container *ngFor="let answer of question.answerList">
-          <div class="row">
-            <div class="col-12 bottom-separator" >
-              <div class="row" *ngIf="answer.type === 'checkbox'">
-                  <p class="col">{{answer.answerText}}</p>
-                  <app-tri-state-checkbox class="col-3" [state]="answer.control"></app-tri-state-checkbox>
-                </div>
-              <app-input-box [state]="answer.control" *ngIf="answer.type === 'input'"></app-input-box>
+        <div class="row" *ngFor="let answer of question.answerList">
+          <div class="col-12 bottom-separator">
+            <div class="row">
+              <p class="col">{{answer.answerText}}</p>
+              <app-tri-state-checkbox class="col-5 col-sm-3" [state]="answer.control"></app-tri-state-checkbox>
             </div>
           </div>
-        </ng-container>
-
+        </div>
+        <div class="row" *ngFor="let answerInput of question.answerInputList">
+          <div class="col bottom-separator">
+            <app-input-box  [state]="answerInput.answerInputText"></app-input-box>
+          </div>
+        </div>
       </div>
     </div>
     <hr>
   </div>
 </div>
+
 
 <div class="btn btn-primary" (click)="save()">Zapisz</div>
 

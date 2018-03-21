@@ -4,10 +4,12 @@
   <hr>
   <div *ngFor="let question of category.questionList">
     <h6>{{question.questionText}}</h6>
-    <ul *ngFor="let answer of question.answerList">
+    <ul>
+      <li *ngFor="let answer of question.answerList">{{answer.answerText}} <span [ngStyle]="{color: colors[answer.control.value.toLowerCase()]}" *ngIf="options.showAnswerState">({{answer.control.value}})</span></li>
+      <ng-container *ngFor="let answerInput of question.answerInputList">
+        <li *ngIf="answerInput.answerInputText.value !== ''" >dodatkowe informacje: {{answerInput.answerInputText.value}}</li>
+      </ng-container>
 
-      <li *ngIf="answer.type === 'checkbox'">{{answer.answerText}} <span [ngStyle]="{color: colors[answer.control.value.toLowerCase()]}" *ngIf="options.showAnswerState">({{answer.control.value}})</span></li>
-      <li *ngIf="answer.type === 'input'">dodatkowe informacje: {{answer.control.value}}</li>
     </ul>
   </div>
 </div>

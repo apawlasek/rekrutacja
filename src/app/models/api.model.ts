@@ -6,9 +6,14 @@ export class SerializedCategory {
 export class SerializedQuestion {
   public questionText: string;
   public answers: SerializedAnswer[];
+  public  answerInputs: AnswerInput[];
 }
 
 export class SerializedAnswer {
   public answerText: string;
   public state: boolean | null;
+}
+
+export class AnswerInput {
+  public answerInputText: string;
 }

@@ -10,24 +10,36 @@ export class ApiService {
         {
           questionText: '1. Jak zrobić, aby na kliknięcie labelki checkboxa, zaznaczał się dany checkbox?',
           answers: [
-            {'answerText': 'Wie co to jest', 'state': true},
-            {'answerText': 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores aspernatur illo minima non quaerat, voluptate.', 'state': false}
+            {answerText: 'Wie co to jest', 'state': true},
+            {
+              answerText: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores aspernatur illo minima non quaerat, voluptate.',
+              'state': false
+            }
+          ],
+          answerInputs: [
+            {answerInputText: ''}
           ]
         },
         {
           questionText: '2. Wyjaśnij czym są cookies?',
           answers: [
-            {'answerText': 'Wie co to jest', 'state': null},
-            {'answerText': 'Potrafi wyjasnic', 'state': true},
-            {'answerText': 'To zależy', 'state': false}
+            {answerText: 'Wie co to jest', 'state': null},
+            {answerText: 'Potrafi wyjasnic', 'state': true},
+            {answerText: 'To zależy', 'state': false}
+          ],
+          answerInputs: [
+            {answerInputText: ''}
           ]
         },
         {
           questionText: '3. Wyjaśnij czym są cookies?',
           answers: [
-            {'answerText': 'Wie co to jest', 'state': true},
-            {'answerText': 'Potrafi wyjasnic', 'state': true},
-            {'answerText': 'To zależy', 'state': false}
+            {answerText: 'Wie co to jest', 'state': true},
+            {answerText: 'Potrafi wyjasnic', 'state': true},
+            {answerText: 'To zależy', 'state': false}
+          ],
+          answerInputs: [
+            {answerInputText: ''}
           ]
         },
       ]
@@ -38,17 +50,23 @@ export class ApiService {
         {
           questionText: '4. Opisz czym jest kolejka zdarzeń / pętla zdarzeń (event loop)?',
           answers: [
-            {'answerText': 'Wie co to jest', 'state': false},
-            {'answerText': 'Potrafi wyjasnic', 'state': null},
-            {'answerText': 'To zależy', 'state': true}
+            {answerText: 'Wie co to jest', 'state': false},
+            {answerText: 'Potrafi wyjasnic', 'state': null},
+            {answerText: 'To zależy', 'state': true}
+          ],
+          answerInputs: [
+            {answerInputText: ''}
           ]
         },
         {
           questionText: '5. Opisz czym jest kolejka zdarzeń / pętla zdarzeń (event loop)?',
           answers: [
-            {'answerText': 'Wie co to jest', 'state': false},
-            {'answerText': 'Potrafi wyjasnic', 'state': false},
-            {'answerText': 'To zależy', 'state': false}
+            {answerText: 'Wie co to jest', 'state': false},
+            {answerText: 'Potrafi wyjasnic', 'state': false},
+            {answerText: 'To zależy', 'state': false}
+          ],
+          answerInputs: [
+            {answerInputText: ''}
           ]
         }
       ]

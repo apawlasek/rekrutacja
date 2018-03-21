@@ -6,7 +6,6 @@ import {Component, Input, OnInit} from '@angular/core';
   styleUrls: ['./input-box.component.scss']
 })
 export class InputBoxComponent implements OnInit {
-  public showInputBox = false;
   @Input() public state;
 
   constructor() {
@@ -15,7 +14,4 @@ export class InputBoxComponent implements OnInit {
   public ngOnInit() {
   }
 
-  public onShowInputBox() {
-    this.showInputBox = !this.showInputBox;
-  }
 }

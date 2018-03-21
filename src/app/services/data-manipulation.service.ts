@@ -14,19 +14,12 @@ export class DataManipulationService {
   constructor(private apiService: ApiService) {
   }
 
-  public filterAnswers(tempData, states: AnswerState[]) {
-    const categoryList = _.cloneDeep(tempData);
-
-    // console.log(`state`, states);
+  public filterAnswers(readyQuestions, states: AnswerState[]) {
+    const categoryList = _.cloneDeep(readyQuestions);
     this.filteredAnswers = categoryList.filter((category) => {
       category.questionList = category.questionList.filter((question) => {
         question.answerList = question.answerList.filter((answer) => {
-          if (answer.type === 'checkbox' && _.includes(states, answer.control.value)) {
-            return true;
-          } else if (answer.type === 'input' && answer.control.value !== '') {
-            return true;
-          }
-          return false;
+          return (_.includes(states, answer.control.value));
         });
 
         return question.answerList.length !== 0;
@@ -42,8 +35,7 @@ export class DataManipulationService {
 
 
   public getQuestionnaire(jsonData: SerializedCategory[]): Question[] {
-    console.log(' o tu', jsonData);
-    return jsonData.map(category => {
+     return jsonData.map(category => {
       const categoryData = {
         categoryName: category.categoryName,
         questionList: [],
@@ -53,21 +45,20 @@ export class DataManipulationService {
         const questionData = {
           questionText: question.questionText,
           answerList: [],
+          answerInputList: []
         };
 
         questionData.answerList = question.answers.map(answer => {
           return {
             answerText: answer.answerText,
             control: new FormControl(this.jsonStateToEnum(answer.state)),
-            type: 'checkbox'
-          };
+            };
         });
-        const answerInput = {
-          control: new FormControl(''),
-          type: 'input'
-        };
-        questionData.answerList.push(answerInput);
-
+        questionData.answerInputList = question.answerInputs.map( answerInput => {
+            return {
+              answerInputText: new FormControl(answerInput.answerInputText)
+            };
+        });
         return questionData;
       });
       console.log(`categoryData`, categoryData);
