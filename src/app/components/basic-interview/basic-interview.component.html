@@ -1,4 +1,4 @@
-<div *ngFor="let category of readyQuestions">
+<div *ngFor="let category of readyQuestions.questionnaireData">
   <div><h3>{{category.categoryName}}</h3>
     <div class="row question-item" *ngFor="let question of category.questionList">
       <div class="col-3">

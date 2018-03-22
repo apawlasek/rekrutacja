@@ -1,6 +1,12 @@
 import {FormControl} from '@angular/forms';
 
-export class Question {
+export class Questionnaire {
+  public id: string;
+  public name: string;
+  public questionnaireData: Category[];
+}
+
+export class Category {
   public categoryName: string;
   public questionList: QuestionData[];
 }
@@ -8,7 +14,7 @@ export class Question {
 export class QuestionData {
   public questionText: string;
   public answerList: Answer[];
-  public answerInput: AnswerInput;
+  public answerInputList: AnswerInput[];
 }
 
 export class Answer {
@@ -17,6 +23,6 @@ export class Answer {
 }
 
 export class AnswerInput {
-public control: FormControl;
+  public answerInputText: FormControl;
 }
 

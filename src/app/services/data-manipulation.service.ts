@@ -2,9 +2,10 @@ import {Injectable} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {AnswerState} from '../models/answer-state';
 import * as _ from 'lodash';
+
 import {ApiService} from './api.service';
-import {SerializedCategory} from '../models/api.model';
-import {Question} from '../models/basic-interview.model';
+import {SerializedQuestionnaire} from '../models/api.model';
+import {Questionnaire} from '../models/basic-interview.model';
 
 
 @Injectable()
@@ -15,11 +16,11 @@ export class DataManipulationService {
   }
 
   public filterAnswers(readyQuestions, states: AnswerState[]) {
-    const categoryList = _.cloneDeep(readyQuestions);
+    const categoryList = _.cloneDeep(readyQuestions).questionnaireData;
     this.filteredAnswers = categoryList.filter((category) => {
       category.questionList = category.questionList.filter((question) => {
         question.answerList = question.answerList.filter((answer) => {
-          return (_.includes(states, answer.control.value));
+          return _.includes(states, answer.control.value);
         });
 
         return question.answerList.length !== 0;
@@ -30,17 +31,19 @@ export class DataManipulationService {
     });
     console.log('filtered answers ' + states, this.filteredAnswers);
     return this.filteredAnswers;
-
   }
 
-
-  public getQuestionnaire(jsonData: SerializedCategory[]): Question[] {
-     return jsonData.map(category => {
+  public loadQuestionnaire(serializedData: SerializedQuestionnaire): Questionnaire {
+    const questionnaire = {
+      id: serializedData.id,
+      name: serializedData.name,
+      questionnaireData: []
+    };
+    questionnaire.questionnaireData = serializedData.questionnaireData.map((category) => {
       const categoryData = {
         categoryName: category.categoryName,
-        questionList: [],
+        questionList: []
       };
-
       categoryData.questionList = category.questions.map(question => {
         const questionData = {
           questionText: question.questionText,
@@ -52,21 +55,61 @@ export class DataManipulationService {
           return {
             answerText: answer.answerText,
             control: new FormControl(this.jsonStateToEnum(answer.state)),
-            };
+          };
         });
-        questionData.answerInputList = question.answerInputs.map( answerInput => {
-            return {
-              answerInputText: new FormControl(answerInput.answerInputText)
-            };
+        questionData.answerInputList = question.answerInputs.map(answerInput => {
+          return {
+            answerInputText: new FormControl(answerInput.answerInputText)
+          };
         });
         return questionData;
       });
       console.log(`categoryData`, categoryData);
       return categoryData;
     });
+    return questionnaire;
   }
 
-  public jsonStateToEnum(state: boolean | null): AnswerState {
+  public saveQuestionnaire(questionnaire: Questionnaire, nameSurname): SerializedQuestionnaire {
+    const serializedData = {
+      id: '',
+      name: nameSurname,
+      questionnaireData: []
+    };
+    serializedData.questionnaireData = questionnaire.questionnaireData.map(category => {
+      const categories = {
+        categoryName: category.categoryName,
+        questions: []
+      };
+      categories.questions = category.questionList.map((question) => {
+        const questionData = {
+          questionText: question.questionText,
+          answers: [],
+          answerInputs: []
+        };
+        questionData.answers = question.answerList.map((answer) => {
+          return {
+            answerText: answer.answerText,
+            state: this.enumToJson(answer.control.value)
+          };
+        });
+        questionData.answerInputs = question.answerInputList.map((answerInput) => {
+          return {
+            answerInputText: answerInput.answerInputText.value
+          };
+        });
+        return questionData;
+      });
+      return categories;
+    });
+    return serializedData;
+  }
+
+  public getData(): SerializedQuestionnaire {
+    return this.apiService.getNewInterview();
+  }
+
+  private jsonStateToEnum(state: boolean | null): AnswerState {
     if (state === true) {
       return AnswerState.Correct;
     } else if (state === false) {
@@ -76,7 +119,14 @@ export class DataManipulationService {
     }
   }
 
-  public getData(): SerializedCategory[] {
-    return this.apiService.categories.slice();
+  private enumToJson(answerState: AnswerState) {
+    if (answerState === AnswerState.Correct) {
+      return true;
+    } else if (answerState === AnswerState.Incorrect) {
+      return false;
+    } else {
+      return null;
+    }
   }
 }
+
