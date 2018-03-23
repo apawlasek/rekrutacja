@@ -10,7 +10,14 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {InputBoxComponent} from './components/input-box/input-box.component';
 import {BasicInterviewResultComponent} from './components/basic-interview-result/basic-interview-result.component';
 import {DataManipulationService} from './services/data-manipulation.service';
+import {RouterModule, Routes} from '@angular/router';
+import {ListComponent} from './components/list/list.component';
 
+const appRoutes: Routes = [
+  {path: '', component: ListComponent},
+  {path: 'basic-interview', component: BasicInterviewComponent}
+
+];
 
 @NgModule({
   declarations: [
@@ -18,11 +25,13 @@ import {DataManipulationService} from './services/data-manipulation.service';
     BasicInterviewComponent,
     TriStateCheckboxComponent,
     InputBoxComponent,
-    BasicInterviewResultComponent
+    BasicInterviewResultComponent,
+    ListComponent
   ],
   imports: [
     BrowserModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RouterModule.forRoot(appRoutes)
   ],
   providers: [ApiService, DataManipulationService, DataManipulationService],
   bootstrap: [AppComponent]
