@@ -6,7 +6,7 @@ import * as _ from 'lodash';
 export class ApiService {
   private personalData: SerializedQuestionnaire = {
     id: '',
-    name: 'dfgshfg',
+    name: '',
     questionnaireData: [
       {
         categoryName: 'JavaScript',
@@ -78,7 +78,7 @@ export class ApiService {
     ]
   };
 
-  public getNewInterview(newId): SerializedQuestionnaire {
+  public getNewInterview(newId: string): SerializedQuestionnaire {
     const newData = _.cloneDeep(this.personalData);
     newData.id = newId;
     return newData;

@@ -105,7 +105,7 @@ export class DataManipulationService {
     return serializedData;
   }
 
-  public getData(newId): SerializedQuestionnaire {
+  public getData(newId: string): SerializedQuestionnaire {
     return this.apiService.getNewInterview(newId);
   }
 

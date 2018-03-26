@@ -21,7 +21,8 @@ export class BasicInterviewComponent implements OnInit, OnDestroy {
   public activeTab = 'all';
   public savedQuestions;
   @Input() public name;
-  public newId = this.newBasicInterview.newId;
+  public newId: string = this.newBasicInterview.newId;
+  public reference;
 
   private formNameSubscription: Subscription;
 
@@ -33,9 +34,11 @@ export class BasicInterviewComponent implements OnInit, OnDestroy {
 
   public ngOnInit() {
     this.readyQuestions = this.dataManipulationService.loadQuestionnaire(this.dataManipulationService.getData(this.newId));
-    localStorage.setItem('references', JSON.stringify([]));
+    this.reference = {id: this.newId, name: this.readyQuestions.name};
     console.log('references', JSON.parse(localStorage.getItem('references')));
     console.log('ready questions: ', this.readyQuestions);
+    console.log(`this.readyQuestions.name`, this.readyQuestions.name);
+    this.addToReference();
     // setInterval(() => {
     //   this.autoSave();
     // }, 60000);
@@ -65,9 +68,7 @@ export class BasicInterviewComponent implements OnInit, OnDestroy {
   public autoSave() {
     this.savedQuestions = this.dataManipulationService.saveQuestionnaire(this.readyQuestions);
     localStorage.setItem('questionnaireData_' + this.savedQuestions.id, JSON.stringify(this.savedQuestions));
-    // this.addToReference();
     console.log('questionnaire from localStorage', JSON.parse(localStorage.getItem('questionnaireData')));
-    // console.log(`JSON.parse(localStorage.getItem('references')`, JSON.parse(localStorage.getItem('references')));
     console.log('ready questions: ', this.readyQuestions);
     console.log('saved questions: ', this.savedQuestions);
   }
@@ -81,10 +82,29 @@ export class BasicInterviewComponent implements OnInit, OnDestroy {
     this.autoSave();
   }
 
-  // private addToReference() {
-  //   localStorage.setItem('references', JSON.stringify(JSON.parse(localStorage.getItem('references')).push(this.reference)));
-  //   JSON.parse(localStorage.getItem('references'));
-  // }
+  public addToReference() {
+    let ref = [];
+    const refString = localStorage.getItem('references');
+    if (typeof refString === 'string') {
+      ref = JSON.parse(refString);
+    }
+    console.log(`ref`, ref);
+    if (ref !== [] && ref.some(person => person.id === this.reference.id)) {
+      console.log(`dupa`);
+
+    } else {
+      ref.push(this.reference);
+      console.log('spushowany ref: ', ref);
+      localStorage.setItem('references', JSON.stringify(ref));
+    }
+
+    // if (ref.some(person => person.id === this.reference.id)) {
+    //   ref.push(this.reference);
+    //   localStorage.setItem('references', JSON.stringify(ref));
+    // } else {
+    //   console.log(`dupa`);
+    // }
+  }
 
   private createForm(): void {
     this.form = this.fb.group({
