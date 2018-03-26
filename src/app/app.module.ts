@@ -2,6 +2,8 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 
 
+import 'rxjs/add/observable/empty';
+
 import {AppComponent} from './components/root/app.component';
 import {BasicInterviewComponent} from './components/basic-interview/basic-interview.component';
 import {ApiService} from './services/api.service';
@@ -12,12 +14,10 @@ import {BasicInterviewResultComponent} from './components/basic-interview-result
 import {DataManipulationService} from './services/data-manipulation.service';
 import {RouterModule, Routes} from '@angular/router';
 import {ListComponent} from './components/list/list.component';
+import {appRoutes} from './routes/router';
+import {NewBasicInterviewResolver} from './routes/new-basic-interview-resolver';
 
-const appRoutes: Routes = [
-  {path: '', component: ListComponent},
-  {path: 'basic-interview', component: BasicInterviewComponent}
 
-];
 
 @NgModule({
   declarations: [
@@ -33,7 +33,7 @@ const appRoutes: Routes = [
     ReactiveFormsModule,
     RouterModule.forRoot(appRoutes)
   ],
-  providers: [ApiService, DataManipulationService, DataManipulationService],
+  providers: [ApiService, DataManipulationService, DataManipulationService, NewBasicInterviewResolver],
   bootstrap: [AppComponent]
 })
 export class AppModule {

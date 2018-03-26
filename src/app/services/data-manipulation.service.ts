@@ -70,10 +70,10 @@ export class DataManipulationService {
     return questionnaire;
   }
 
-  public saveQuestionnaire(questionnaire: Questionnaire, nameSurname): SerializedQuestionnaire {
+  public saveQuestionnaire(questionnaire: Questionnaire): SerializedQuestionnaire {
     const serializedData = {
-      id: '',
-      name: nameSurname,
+      id: questionnaire.id,
+      name: questionnaire.name,
       questionnaireData: []
     };
     serializedData.questionnaireData = questionnaire.questionnaireData.map(category => {
@@ -105,8 +105,8 @@ export class DataManipulationService {
     return serializedData;
   }
 
-  public getData(): SerializedQuestionnaire {
-    return this.apiService.getNewInterview();
+  public getData(newId): SerializedQuestionnaire {
+    return this.apiService.getNewInterview(newId);
   }
 
   private jsonStateToEnum(state: boolean | null): AnswerState {
