@@ -16,6 +16,7 @@ import {RouterModule, Routes} from '@angular/router';
 import {ListComponent} from './components/list/list.component';
 import {appRoutes} from './routes/router';
 import {NewBasicInterviewResolver} from './routes/new-basic-interview-resolver';
+import { BasicInterviewCreateComponent } from './components/basic-interview-create/basic-interview-create.component';
 
 
 
@@ -26,7 +27,8 @@ import {NewBasicInterviewResolver} from './routes/new-basic-interview-resolver';
     TriStateCheckboxComponent,
     InputBoxComponent,
     BasicInterviewResultComponent,
-    ListComponent
+    ListComponent,
+    BasicInterviewCreateComponent
   ],
   imports: [
     BrowserModule,

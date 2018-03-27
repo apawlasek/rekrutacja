@@ -105,8 +105,8 @@ export class DataManipulationService {
     return serializedData;
   }
 
-  public getData(newId: string): SerializedQuestionnaire {
-    return this.apiService.getNewInterview(newId);
+  public getData(newId: string, newName: string): SerializedQuestionnaire {
+    return this.apiService.getNewInterview(newId, newName);
   }
 
   private jsonStateToEnum(state: boolean | null): AnswerState {

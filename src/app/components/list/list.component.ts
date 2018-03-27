@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-list',
@@ -6,10 +6,19 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./list.component.scss']
 })
 export class ListComponent implements OnInit {
+  public references;
+  public idsFromReferences = [];
 
-  constructor() { }
-
-  ngOnInit() {
+  constructor() {
   }
 
+  public ngOnInit() {
+    this.references = this.getReferences();
+    console.log(this.references);
+  }
+
+  public getReferences(): any[] {
+    return JSON.parse(localStorage.getItem('references'));
+
+  }
 }

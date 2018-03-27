@@ -78,9 +78,10 @@ export class ApiService {
     ]
   };
 
-  public getNewInterview(newId: string): SerializedQuestionnaire {
+  public getNewInterview(newId: string, newName: string): SerializedQuestionnaire {
     const newData = _.cloneDeep(this.personalData);
     newData.id = newId;
+    newData.name = newName;
     return newData;
   }
 }

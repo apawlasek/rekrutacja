@@ -1,63 +1,49 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {ApiService} from '../../services/api.service';
 import {AnswerState} from '../../models/answer-state';
 import {DataManipulationService} from '../../services/data-manipulation.service';
-import {Category} from '../../models/basic-interview.model';
-import {FormBuilder, FormGroup} from '@angular/forms';
-import {Subscription} from 'rxjs/Subscription';
-import {NewBasicInterviewResolver} from '../../routes/new-basic-interview-resolver';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-basic-interview',
   templateUrl: './basic-interview.component.html',
   styleUrls: ['./basic-interview.component.scss']
 })
-export class BasicInterviewComponent implements OnInit, OnDestroy {
-  public form: FormGroup;
+export class BasicInterviewComponent implements OnInit {
   public readyQuestions;
   public allAnswers;
   public trueAnswers;
   public falseAnswers;
   public activeTab = 'all';
   public savedQuestions;
-  @Input() public name;
-  public newId: string = this.newBasicInterview.newId;
-  public reference;
 
-  private formNameSubscription: Subscription;
+  public id: string;
+  public name: string;
 
-  constructor(private fb: FormBuilder,
-              private apiService: ApiService,
+  constructor(private apiService: ApiService,
               private dataManipulationService: DataManipulationService,
-              private newBasicInterview: NewBasicInterviewResolver) {
-  }
+              private route: ActivatedRoute) { }
 
   public ngOnInit() {
-    this.readyQuestions = this.dataManipulationService.loadQuestionnaire(this.dataManipulationService.getData(this.newId));
-    this.reference = {id: this.newId, name: this.readyQuestions.name};
+    this.getIdAndName();
+    this.readyQuestions = this.dataManipulationService.loadQuestionnaire(this.dataManipulationService.getData(this.id, this.name));
     console.log('references', JSON.parse(localStorage.getItem('references')));
     console.log('ready questions: ', this.readyQuestions);
     console.log(`this.readyQuestions.name`, this.readyQuestions.name);
-    this.addToReference();
     // setInterval(() => {
     //   this.autoSave();
     // }, 60000);
-    this.createForm();
   }
 
-  // public ngOnInit() {
-  //   if (this.newId === JSON.parse(localStorage.getItem('questionnaireData'))) {
-  //     this.readyQuestions = this.dataManipulationService.loadQuestionnaire(this.dataManipulationService.getData(this.newId));
-  //     console.log('ready questions: ', this.readyQuestions);
-  //     // setInterval(() => {
-  //     //   this.autoSave();
-  //     // }, 60000);
-  //   }
-  // }
-
-  public ngOnDestroy(): void {
-    this.formNameSubscription.unsubscribe();
+  public getIdAndName() {
+    this.id  = this.route.snapshot.params['id'];
+    const ref = JSON.parse(localStorage.getItem('references'));
+    console.log(`ref from getName()`, ref);
+    const refObj = ref.find(obj => obj.id === this.id);
+    this.name = refObj.name;
+    console.log(`this.name: `, this.name);
   }
+
 
   public serialize() {
     this.allAnswers = this.dataManipulationService.filterAnswers(this.readyQuestions, [AnswerState.Correct, AnswerState.Incorrect]);
@@ -82,38 +68,8 @@ export class BasicInterviewComponent implements OnInit, OnDestroy {
     this.autoSave();
   }
 
-  public addToReference() {
-    let ref = [];
-    const refString = localStorage.getItem('references');
-    if (typeof refString === 'string') {
-      ref = JSON.parse(refString);
-    }
-    console.log(`ref`, ref);
-    if (ref !== [] && ref.some(person => person.id === this.reference.id)) {
-      console.log(`dupa`);
 
-    } else {
-      ref.push(this.reference);
-      console.log('spushowany ref: ', ref);
-      localStorage.setItem('references', JSON.stringify(ref));
-    }
 
-    // if (ref.some(person => person.id === this.reference.id)) {
-    //   ref.push(this.reference);
-    //   localStorage.setItem('references', JSON.stringify(ref));
-    // } else {
-    //   console.log(`dupa`);
-    // }
-  }
 
-  private createForm(): void {
-    this.form = this.fb.group({
-      name: this.readyQuestions.name,
-    });
-
-    this.formNameSubscription = this.form.get('name').valueChanges.subscribe((value: string) => {
-      this.readyQuestions.name = value;
-    });
-  }
 }
 

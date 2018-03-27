@@ -1,14 +1,13 @@
-<form [formGroup]="form">
-  <div class="row" >
-    <div class="col bottom-separator">nazwisko i imię
-      <textarea
-        class="form-control float-right" placeholder="nazwisko_imię" formControlName="name"
-        rows="1"></textarea>
-    </div>
-  </div>
-</form>
-
-
+<!--<form [formGroup]="form">-->
+  <!--<div class="row" >-->
+    <!--<div class="col">nazwisko i imię-->
+      <!--<textarea-->
+        <!--class="form-control float-right" placeholder="nazwisko_imię" formControlName="name"-->
+        <!--rows="1"></textarea>-->
+    <!--</div>-->
+  <!--</div>-->
+<!--</form>-->
+<div>rozmawiasz z: {{name}}</div>
 <div *ngFor="let category of readyQuestions.questionnaireData">
   <div><h3>{{category.categoryName}}</h3>
     <div class="row question-item" *ngFor="let question of category.questionList">
