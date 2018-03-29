@@ -1,12 +1,19 @@
-<form [formGroup]="form">
-  <div class="row" >
-    <div class="col">nazwisko i imię
-      <textarea
-        class="form-control float-right" placeholder="nazwisko_imię" formControlName="name"
-        rows="1"></textarea>
+
+  <form [formGroup]="form">
+    <div class="row" >
+      <div class="col">
+        <p class="list-group-item  active border-0 list-dark bg-dark">
+          Wprowadź nazwisko i imię:
+        </p>
+        <input
+
+          class="form-control float-right" placeholder="Nazwisko Imię" formControlName="name"(keydown.enter)="onEnter()"
+          >
+      </div>
     </div>
-  </div>
-</form>
-<div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
-  <button class="btn btn-primary" [routerLink]="['/basic-interview', id]" (click)="addToReference()">Przejdź do formularza</button>
-</div>
+  </form>
+ <br>
+      <button class="btn btn-dark" [routerLink]="['/basic-interview', id]"  (click)="addToReference()" [disabled]="disabled" >Przejdź do formularza</button>
+
+
+

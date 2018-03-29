@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ApiService} from '../../services/api.service';
 import {AnswerState} from '../../models/answer-state';
 import {DataManipulationService} from '../../services/data-manipulation.service';
@@ -9,39 +9,54 @@ import {ActivatedRoute} from '@angular/router';
   templateUrl: './basic-interview.component.html',
   styleUrls: ['./basic-interview.component.scss']
 })
-export class BasicInterviewComponent implements OnInit {
+export class BasicInterviewComponent implements OnInit, OnDestroy {
   public readyQuestions;
   public allAnswers;
   public trueAnswers;
   public falseAnswers;
   public activeTab = 'all';
   public savedQuestions;
+  public autosaveInterval;
+  public resultTabsVisible = false;
+  public collapsed = '';
+  public categoryNames;
 
   public id: string;
   public name: string;
 
   constructor(private apiService: ApiService,
               private dataManipulationService: DataManipulationService,
-              private route: ActivatedRoute) { }
+              private route: ActivatedRoute) {
+  }
 
   public ngOnInit() {
     this.getIdAndName();
-    this.readyQuestions = this.dataManipulationService.loadQuestionnaire(this.dataManipulationService.getData(this.id, this.name));
-    console.log('references', JSON.parse(localStorage.getItem('references')));
-    console.log('ready questions: ', this.readyQuestions);
-    console.log(`this.readyQuestions.name`, this.readyQuestions.name);
-    // setInterval(() => {
-    //   this.autoSave();
-    // }, 60000);
+    this.loadData();
+    this.autosaveInterval = setInterval(() => {
+      this.autoSave();
+    }, 10000);
+  }
+
+
+  public ngOnDestroy() {
+    clearInterval(this.autosaveInterval);
   }
 
   public getIdAndName() {
-    this.id  = this.route.snapshot.params['id'];
+    this.id = this.route.snapshot.params['id'];
     const ref = JSON.parse(localStorage.getItem('references'));
-    console.log(`ref from getName()`, ref);
     const refObj = ref.find(obj => obj.id === this.id);
     this.name = refObj.name;
-    console.log(`this.name: `, this.name);
+  }
+
+  public loadData() {
+    const questionnaireString = localStorage.getItem('questionnaireData_' + this.id);
+    if (typeof  questionnaireString === 'string') {
+      this.readyQuestions = this.dataManipulationService.loadQuestionnaire(JSON.parse(questionnaireString));
+    } else {
+      this.readyQuestions = this.dataManipulationService.loadQuestionnaire(this.dataManipulationService.getData(this.id, this.name));
+    }
+    this.categoryNames = this.getCategoryNames(this.readyQuestions);
   }
 
 
@@ -54,9 +69,8 @@ export class BasicInterviewComponent implements OnInit {
   public autoSave() {
     this.savedQuestions = this.dataManipulationService.saveQuestionnaire(this.readyQuestions);
     localStorage.setItem('questionnaireData_' + this.savedQuestions.id, JSON.stringify(this.savedQuestions));
-    console.log('questionnaire from localStorage', JSON.parse(localStorage.getItem('questionnaireData')));
-    console.log('ready questions: ', this.readyQuestions);
-    console.log('saved questions: ', this.savedQuestions);
+    console.log('Questionnaire autosaved!');
+
   }
 
   public setTabTo(tabName) {
@@ -66,9 +80,20 @@ export class BasicInterviewComponent implements OnInit {
   public save() {
     this.serialize();
     this.autoSave();
+    this.resultTabsVisible = true;
   }
 
+  public getCategoryNames(readyQuestions) {
+        return readyQuestions.questionnaireData.map((category) => category.categoryName);
+  }
 
+  public onCollapse(category) {
+    if (this.collapsed === category) {
+      this.collapsed = '';
+    } else {
+      this.collapsed = category;
+    }
+  }
 
 
 }

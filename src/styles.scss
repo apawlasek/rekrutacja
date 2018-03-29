@@ -1,5 +1,21 @@
 /* You can add global styles to this file, and also import other style files */
 
 :root {
-  font-size: 12px;
+  font-size: 16px;
 }
+
+input.form-control::placeholder {
+  color: darkgrey;
+}
+
+textarea.form-control {
+  min-height: 40px;
+  &::placeholder {
+    color: darkgrey;
+
+  }
+}
+
+
+
+

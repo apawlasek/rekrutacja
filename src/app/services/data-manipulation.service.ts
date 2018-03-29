@@ -12,6 +12,7 @@ import {Questionnaire} from '../models/basic-interview.model';
 export class DataManipulationService {
   public filteredAnswers;
 
+
   constructor(private apiService: ApiService) {
   }
 
@@ -29,9 +30,10 @@ export class DataManipulationService {
       return category.questionList.length !== 0;
 
     });
-    console.log('filtered answers ' + states, this.filteredAnswers);
     return this.filteredAnswers;
   }
+
+
 
   public loadQuestionnaire(serializedData: SerializedQuestionnaire): Questionnaire {
     const questionnaire = {
@@ -64,7 +66,6 @@ export class DataManipulationService {
         });
         return questionData;
       });
-      console.log(`categoryData`, categoryData);
       return categoryData;
     });
     return questionnaire;

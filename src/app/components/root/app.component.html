@@ -1,15 +1,27 @@
-<div class="container">
-  <div class="row">
-    <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
-      <button class="btn btn-primary" routerLink="/"
-              routerLinkActive="btn-success" [routerLinkActiveOptions]="{ exact: true }">Lista rozmów</button>
-      <button class="btn btn-primary" routerLink="/basic-interview-create"
-              routerLinkActive="btn-success" [routerLinkActiveOptions]="{ exact: true }">Nowa rozmowa</button>
+  <nav class="navbar navbar-expand-sm  navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand brand-size" [routerLink]="['/']"><strong>Br<span class="blueIt">it</span>eSito</strong></a>
+      <div class="collapse navbar-collapse" id="navbarColor01">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Lista
+              rozmów <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/basic-interview-create" routerLinkActive="active"
+               [routerLinkActiveOptions]="{ exact: true }">Nowa rozmowa</a>
+          </li>
+        </ul>
+      </div>
+    </div>
 
-    </div>
-    </div>
-    </div>
-  <router-outlet></router-outlet>
+  </nav>
+  <br>
+  <div  class="container content-padding">
+    <router-outlet></router-outlet>
+  </div>
+
+
 
 
 
