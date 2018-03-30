@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, Output} from '@angular/core';
 import {ApiService} from '../../services/api.service';
 import {AnswerState} from '../../models/answer-state';
 import {DataManipulationService} from '../../services/data-manipulation.service';
@@ -21,6 +21,7 @@ export class BasicInterviewComponent implements OnInit, OnDestroy {
   public categoriesObj = {};
   public id: string;
   public name: string;
+  public correctAnswers = {};
 
   constructor(private apiService: ApiService,
               private dataManipulationService: DataManipulationService,
@@ -30,6 +31,7 @@ export class BasicInterviewComponent implements OnInit, OnDestroy {
   public ngOnInit() {
     this.getIdAndName();
     this.loadData();
+    this.correctAnswers = this.dataManipulationService.summarizeAnswers((this.readyQuestions));
     this.autosaveInterval = setInterval(() => {
       this.autoSave();
     }, 10000);
@@ -71,7 +73,7 @@ export class BasicInterviewComponent implements OnInit, OnDestroy {
     this.savedQuestions = this.dataManipulationService.saveQuestionnaire(this.readyQuestions);
     localStorage.setItem('questionnaireData_' + this.savedQuestions.id, JSON.stringify(this.savedQuestions));
     console.log('Questionnaire autosaved!');
-
+    this.correctAnswers = this.dataManipulationService.summarizeAnswers((this.readyQuestions));
   }
 
   public setTabTo(tabName) {

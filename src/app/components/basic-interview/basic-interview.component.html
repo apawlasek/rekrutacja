@@ -6,7 +6,7 @@
 <div class="category-item" *ngFor="let category of readyQuestions.questionnaireData" [ngClass]="{'collapsed' : categoriesObj[category.categoryName] !== true}">
   <div class="list-group-item  active border-0 list-dark bg-dark d-flex justify-content-between" (click)="onCollapse(category.categoryName)">
     <h5 class="mb-0">{{category.categoryName}}</h5>
-    <strong><span class="text-success">3 </span>/<span class="text-danger"> 5</span> z 16</strong>
+    <strong><span class="text-success">{{correctAnswers[category.categoryName].correct}} </span>/<span class="text-danger"> {{correctAnswers[category.categoryName].incorrect}}</span> z {{correctAnswers[category.categoryName].all}}</strong>
   </div>
   <div class="list-group-item  question-item" *ngFor="let question of category.questionList" >
     <div class="row">

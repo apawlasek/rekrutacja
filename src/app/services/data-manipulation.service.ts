@@ -11,6 +11,9 @@ import {Questionnaire} from '../models/basic-interview.model';
 @Injectable()
 export class DataManipulationService {
   public filteredAnswers;
+  public answersSummary = {};
+  public currentNameAndId = {name: 'jeszcze z nikim', id: ''};
+
 
 
   constructor(private apiService: ApiService) {
@@ -31,12 +34,36 @@ export class DataManipulationService {
 
     });
     return this.filteredAnswers;
+
+  }
+  public summarizeAnswers(readyQuestions) {
+    const categoryList = readyQuestions.questionnaireData;
+    categoryList.forEach(category => {
+      this.answersSummary[category.categoryName] = {correct: 0, incorrect: 0, all: 0};
+      category.questionList.forEach((question) => {
+        question.answerList.forEach((answer) => {
+          const abc = this.answersSummary[category.categoryName];
+          abc.all++;
+          if (answer.control.value === AnswerState.Correct) {
+            abc.correct++;
+          } else if (answer.control.value === AnswerState.Incorrect) {
+            abc.incorrect++;
+          }
+        });
+      });
+    });
+
+    console.log(this.answersSummary);
+    return this.answersSummary;
   }
 
-
-
   public loadQuestionnaire(serializedData: SerializedQuestionnaire): Questionnaire {
-    const questionnaire = {
+    this.currentNameAndId = {
+      id: serializedData.id,
+      name: serializedData.name
+    };
+      console.log('o tutaj', this.currentNameAndId);
+      const questionnaire = {
       id: serializedData.id,
       name: serializedData.name,
       questionnaireData: []
