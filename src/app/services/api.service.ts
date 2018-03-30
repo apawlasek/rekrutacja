@@ -74,6 +74,33 @@ export class ApiService {
             ]
           }
         ]
+      },
+      {
+        categoryName: 'Haft krzyżykowy',
+        questions: [
+          {
+            questionText: '4. Opisz czym jest kolejka zdarzeń / pętla zdarzeń (event loop)?',
+            answers: [
+              {answerText: 'Wie co to jest', 'state': null},
+              {answerText: 'Potrafi wyjasnic', 'state': null},
+              {answerText: 'To zależy', 'state': null}
+            ],
+            answerInputs: [
+              {answerInputText: ''}
+            ]
+          },
+          {
+            questionText: '5. Opisz czym jest kolejka zdarzeń / pętla zdarzeń (event loop)?',
+            answers: [
+              {answerText: 'Wie co to jest', 'state': null},
+              {answerText: 'Potrafi wyjasnic', 'state': null},
+              {answerText: 'To zależy', 'state': null}
+            ],
+            answerInputs: [
+              {answerInputText: ''}
+            ]
+          }
+        ]
       }
     ]
   };

@@ -18,9 +18,7 @@ export class BasicInterviewComponent implements OnInit, OnDestroy {
   public savedQuestions;
   public autosaveInterval;
   public resultTabsVisible = false;
-  public collapsed = '';
-  public categoryNames;
-
+  public categoriesObj = {};
   public id: string;
   public name: string;
 
@@ -56,7 +54,8 @@ export class BasicInterviewComponent implements OnInit, OnDestroy {
     } else {
       this.readyQuestions = this.dataManipulationService.loadQuestionnaire(this.dataManipulationService.getData(this.id, this.name));
     }
-    this.categoryNames = this.getCategoryNames(this.readyQuestions);
+    this.getCategoriesObj(this.readyQuestions);
+    console.log('readyquest', this.readyQuestions.questionnaireData);
   }
 
 
@@ -64,6 +63,8 @@ export class BasicInterviewComponent implements OnInit, OnDestroy {
     this.allAnswers = this.dataManipulationService.filterAnswers(this.readyQuestions, [AnswerState.Correct, AnswerState.Incorrect]);
     this.trueAnswers = this.dataManipulationService.filterAnswers(this.readyQuestions, [AnswerState.Correct]);
     this.falseAnswers = this.dataManipulationService.filterAnswers(this.readyQuestions, [AnswerState.Incorrect]);
+
+
   }
 
   public autoSave() {
@@ -83,18 +84,17 @@ export class BasicInterviewComponent implements OnInit, OnDestroy {
     this.resultTabsVisible = true;
   }
 
-  public getCategoryNames(readyQuestions) {
-        return readyQuestions.questionnaireData.map((category) => category.categoryName);
+
+  public getCategoriesObj(readyQuestions) {
+    const categoryNames = readyQuestions.questionnaireData.map((category) => category.categoryName);
+    categoryNames.map((categoryName) => {
+      this.categoriesObj[categoryName] = false;
+    });
   }
 
   public onCollapse(category) {
-    if (this.collapsed === category) {
-      this.collapsed = '';
-    } else {
-      this.collapsed = category;
-    }
+    this.categoriesObj[category] = !this.categoriesObj[category];
   }
 
 
 }
-
