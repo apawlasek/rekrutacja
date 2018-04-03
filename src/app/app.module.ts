@@ -16,8 +16,9 @@ import {RouterModule, Routes} from '@angular/router';
 import {ListComponent} from './components/list/list.component';
 import {appRoutes} from './routes/router';
 import {NewBasicInterviewResolver} from './routes/new-basic-interview-resolver';
-import { BasicInterviewCreateComponent } from './components/basic-interview-create/basic-interview-create.component';
-
+import {BasicInterviewCreateComponent} from './components/basic-interview-create/basic-interview-create.component';
+import {CurrentStateService} from './services/current-state.service';
+import { TranslateAnswerStatePipe } from './pipes/translate-answer-state.pipe';
 
 
 @NgModule({
@@ -28,14 +29,21 @@ import { BasicInterviewCreateComponent } from './components/basic-interview-crea
     InputBoxComponent,
     BasicInterviewResultComponent,
     ListComponent,
-    BasicInterviewCreateComponent
+    BasicInterviewCreateComponent,
+    TranslateAnswerStatePipe
   ],
   imports: [
     BrowserModule,
     ReactiveFormsModule,
     RouterModule.forRoot(appRoutes)
   ],
-  providers: [ApiService, DataManipulationService, DataManipulationService, NewBasicInterviewResolver],
+  providers: [
+    ApiService,
+    DataManipulationService,
+    DataManipulationService,
+    NewBasicInterviewResolver,
+    CurrentStateService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

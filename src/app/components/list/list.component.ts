@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {FormBuilder} from '@angular/forms';
 
 @Component({
   selector: 'app-list',
@@ -8,6 +9,7 @@ import {Component, OnInit} from '@angular/core';
 export class ListComponent implements OnInit {
   public references;
   public idsFromReferences;
+  public hideConfiramtionBtns = true;
 
   constructor() {
   }
@@ -35,10 +37,14 @@ export class ListComponent implements OnInit {
     return this.references.map((obj) => obj.id);
   }
 
+  public onConfirm() {
+    this.hideConfiramtionBtns = !this.hideConfiramtionBtns;
+  }
   public onDelete(id) {
     localStorage.removeItem('questionnaireData_' + id);
     this.removeFromReference(id);
     console.log(event);
+
   }
 
   public removeFromReference(id) {

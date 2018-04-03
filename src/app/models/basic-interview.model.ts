@@ -24,5 +24,6 @@ export class Answer {
 
 export class AnswerInput {
   public answerInputText: FormControl;
+  public control: FormControl;
 }
 

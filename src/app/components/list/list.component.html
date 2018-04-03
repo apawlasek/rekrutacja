@@ -6,6 +6,13 @@
     <a href="#" class="list-group-item-action" [routerLink]="['/basic-interview', person.id]">
       {{person.name}}
     </a>
-    <button class="btn btn-outline-dark btn-sm" (click)="onDelete(person.id)">usuń</button>
+    <span>data utworzenia: {{person.creation}}</span>
+    <span>data modyfikacji:{{person.modification}}</span>
+    <span class="d-flex justify-content-between">
+
+      <button class="btn btn-outline-dark btn-sm" (click)="onConfirm()" [hidden]="!hideConfiramtionBtns">usuń</button>
+      <button class="btn btn-outline-danger btn-sm" (click)="onDelete(person.id)" [hidden]="hideConfiramtionBtns">potwierdź</button>
+      <button class="btn btn-outline-info btn-sm" (click)="onConfirm()" [hidden]="hideConfiramtionBtns">anuluj</button>
+    </span>
   </div>
 </div>

@@ -2,6 +2,7 @@ import {Component, OnInit, OnDestroy, Output} from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {Subscription} from 'rxjs/Subscription';
 import {Router} from '@angular/router';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-basic-interview-create',
@@ -15,7 +16,7 @@ export class BasicInterviewCreateComponent implements OnInit, OnDestroy {
   @Output() public id;
   public disabled = true;
 
-  public reference = {id: '', name: ''};
+  public reference = {id: '', name: '', creation: '', modification: ''};
 
   constructor(private fb: FormBuilder,
               private router: Router) {
@@ -23,7 +24,7 @@ export class BasicInterviewCreateComponent implements OnInit, OnDestroy {
 
   public ngOnInit() {
     this.createForm();
-    this.setId();
+    this.setIdAndCreationDate();
   }
 
   public ngOnDestroy(): void {
@@ -41,9 +42,10 @@ export class BasicInterviewCreateComponent implements OnInit, OnDestroy {
     });
   }
 
-  public setId() {
+  public setIdAndCreationDate() {
     this.reference.id = (+(new Date())).toString(32);
     this.id = this.reference.id;
+    this.reference.creation = moment().format('LLL');
   }
 
   public addToReference() {

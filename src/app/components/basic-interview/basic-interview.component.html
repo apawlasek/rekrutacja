@@ -1,14 +1,21 @@
-
-
-
-
-<div><h4>Rozmawiasz z: {{name}}</h4></div>
-<div class="category-item" *ngFor="let category of readyQuestions.questionnaireData" [ngClass]="{'collapsed' : categoriesObj[category.categoryName] !== true}">
-  <div class="list-group-item  active border-0 list-dark bg-dark d-flex justify-content-between" (click)="onCollapse(category.categoryName)">
+<form [formGroup]="form">
+  <input
+  type="text"
+  class="form-control float-right"
+  formControlName="name"
+>
+  {{form.get('name').dirty}}
+</form>
+<div class="category-item" *ngFor="let category of readyQuestions.questionnaireData"
+     [ngClass]="{'collapsed' : categoriesObj[category.categoryName] !== true}">
+  <div class="list-group-item  active border-0 list-dark bg-dark d-flex justify-content-between"
+       (click)="onCollapse(category.categoryName)">
     <h5 class="mb-0">{{category.categoryName}}</h5>
-    <strong><span class="text-success">{{correctAnswers[category.categoryName].correct}} </span>/<span class="text-danger"> {{correctAnswers[category.categoryName].incorrect}}</span> z {{correctAnswers[category.categoryName].all}}</strong>
+    <strong><span class="text-success">{{summarizedAnswers[category.categoryName]?.correct}} </span>/<span
+      class="text-danger"> {{summarizedAnswers[category.categoryName]?.incorrect}}</span> z
+      {{summarizedAnswers[category.categoryName]?.all}}</strong>
   </div>
-  <div class="list-group-item  question-item" *ngFor="let question of category.questionList" >
+  <div class="list-group-item  question-item" *ngFor="let question of category.questionList">
     <div class="row">
       <div class="col-3">
         {{question.questionText}}
@@ -23,8 +30,12 @@
           </div>
         </div>
         <div class="row" *ngFor="let answerInput of question.answerInputList">
-          <div class="col bottom-separator">
-            <app-input-box [state]="answerInput.answerInputText"></app-input-box>
+          <div class="col-12 bottom-separator">
+            <div class="row">
+              <app-input-box class="col" [state]="answerInput.answerInputText"></app-input-box>
+              <app-tri-state-checkbox class="col-5 col-sm-3" [state]="answerInput.control" [excludedStates]="[answerState.Unasked]"></app-tri-state-checkbox>
+            </div>
+
           </div>
         </div>
       </div>

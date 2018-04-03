@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, Output} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {AnswerState} from '../models/answer-state';
 import * as _ from 'lodash';
@@ -10,9 +10,6 @@ import {Questionnaire} from '../models/basic-interview.model';
 
 @Injectable()
 export class DataManipulationService {
-  public filteredAnswers;
-  public answersSummary = {};
-  public currentNameAndId = {name: 'jeszcze z nikim', id: ''};
 
 
 
@@ -21,7 +18,7 @@ export class DataManipulationService {
 
   public filterAnswers(readyQuestions, states: AnswerState[]) {
     const categoryList = _.cloneDeep(readyQuestions).questionnaireData;
-    this.filteredAnswers = categoryList.filter((category) => {
+    const filteredAnswers = categoryList.filter((category) => {
       category.questionList = category.questionList.filter((question) => {
         question.answerList = question.answerList.filter((answer) => {
           return _.includes(states, answer.control.value);
@@ -33,16 +30,17 @@ export class DataManipulationService {
       return category.questionList.length !== 0;
 
     });
-    return this.filteredAnswers;
+    return filteredAnswers;
 
   }
   public summarizeAnswers(readyQuestions) {
     const categoryList = readyQuestions.questionnaireData;
+    const answersSummary = {};
     categoryList.forEach(category => {
-      this.answersSummary[category.categoryName] = {correct: 0, incorrect: 0, all: 0};
+      answersSummary[category.categoryName] = {correct: 0, incorrect: 0, all: 0};
       category.questionList.forEach((question) => {
         question.answerList.forEach((answer) => {
-          const abc = this.answersSummary[category.categoryName];
+          const abc = answersSummary[category.categoryName];
           abc.all++;
           if (answer.control.value === AnswerState.Correct) {
             abc.correct++;
@@ -53,16 +51,11 @@ export class DataManipulationService {
       });
     });
 
-    console.log(this.answersSummary);
-    return this.answersSummary;
+    // console.log(this.answersSummary);
+    return answersSummary;
   }
 
   public loadQuestionnaire(serializedData: SerializedQuestionnaire): Questionnaire {
-    this.currentNameAndId = {
-      id: serializedData.id,
-      name: serializedData.name
-    };
-      console.log('o tutaj', this.currentNameAndId);
       const questionnaire = {
       id: serializedData.id,
       name: serializedData.name,
@@ -88,7 +81,9 @@ export class DataManipulationService {
         });
         questionData.answerInputList = question.answerInputs.map(answerInput => {
           return {
-            answerInputText: new FormControl(answerInput.answerInputText)
+            answerInputText: new FormControl(answerInput.answerInputText),
+            control: new FormControl(this.jsonStateToEnum(answerInput.state)),
+
           };
         });
         return questionData;
@@ -123,7 +118,8 @@ export class DataManipulationService {
         });
         questionData.answerInputs = question.answerInputList.map((answerInput) => {
           return {
-            answerInputText: answerInput.answerInputText.value
+            answerInputText: answerInput.answerInputText.value,
+            state: this.enumToJson(answerInput.control.value),
           };
         });
         return questionData;
