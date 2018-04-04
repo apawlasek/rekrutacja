@@ -1,11 +1,10 @@
-import {Component, DoCheck, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ApiService} from '../../services/api.service';
 import {AnswerState} from '../../models/answer-state';
 import {DataManipulationService} from '../../services/data-manipulation.service';
 import {ActivatedRoute} from '@angular/router';
 import {CurrentStateService} from '../../services/current-state.service';
 import {FormBuilder, FormGroup} from '@angular/forms';
-import {Subscription} from 'rxjs/Subscription';
 import * as moment from 'moment';
 
 @Component({
@@ -19,7 +18,6 @@ export class BasicInterviewComponent implements OnInit, OnDestroy {
   public trueAnswers;
   public falseAnswers;
   public activeTab = 'all';
-  public savedQuestions;
   public autosaveInterval;
   public resultTabsVisible = false;
   public categoriesObj = {};
@@ -27,7 +25,6 @@ export class BasicInterviewComponent implements OnInit, OnDestroy {
   public name: string;
   public summarizedAnswers = {};
   public form: FormGroup;
-  private formNameSubscription: Subscription;
   public references;
   public currentPersonReferenceObj;
   public answerState = AnswerState;
@@ -51,7 +48,6 @@ export class BasicInterviewComponent implements OnInit, OnDestroy {
   public ngOnDestroy() {
     clearInterval(this.autosaveInterval);
     this.currentStateService.setInterviewee('');
-    this.formNameSubscription.unsubscribe();
   }
 
   public getIdAndName() {
@@ -81,15 +77,16 @@ export class BasicInterviewComponent implements OnInit, OnDestroy {
     this.form = this.fb.group({
       name: this.name,
     });
+ }
 
-    this.formNameSubscription = this.form.get('name').valueChanges.subscribe((value: string) => {
-      this.name = value;
-      console.log(`this.name `, this.name);
-      this.updateReferences();
-      this.readyQuestions.name = this.name;
-      this.currentStateService.setInterviewee(this.name);
-      // this.form.get('name').markAsPristine();
-    });
+  public onNameChange() {
+    this.form.get('name').markAsPristine();
+    this.name = this.form.get('name').value;
+    console.log(`this.name `, this.name);
+    this.updateReferences();
+    this.readyQuestions.name = this.name;
+    this.autoSave();
+    this.currentStateService.setInterviewee(this.name);
   }
 
   public updateReferences() {
@@ -109,10 +106,11 @@ export class BasicInterviewComponent implements OnInit, OnDestroy {
   }
 
   public autoSave() {
-    this.savedQuestions = this.dataManipulationService.saveQuestionnaire(this.readyQuestions);
-    localStorage.setItem('questionnaireData_' + this.savedQuestions.id, JSON.stringify(this.savedQuestions));
+    const savedQuestions = this.dataManipulationService.saveQuestionnaire(this.readyQuestions);
+    localStorage.setItem('questionnaireData_' + savedQuestions.id, JSON.stringify(savedQuestions));
     console.log('Questionnaire autosaved!');
     this.summarizedAnswers = this.dataManipulationService.summarizeAnswers((this.readyQuestions));
+    this.serialize();
   }
 
   public setTabTo(tabName) {
@@ -120,10 +118,11 @@ export class BasicInterviewComponent implements OnInit, OnDestroy {
   }
 
   public save() {
-    this.serialize();
     this.autoSave();
     this.resultTabsVisible = true;
-    this.references.modification = moment().format('LLL');
+    this.currentPersonReferenceObj.modification = Date.now();
+    localStorage.setItem('references', JSON.stringify(this.references));
+
   }
 
 

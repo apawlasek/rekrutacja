@@ -1,10 +1,16 @@
-<form [formGroup]="form">
-  <input
-  type="text"
-  class="form-control float-right"
-  formControlName="name"
->
-  {{form.get('name').dirty}}
+<form class="margin10px" [formGroup]="form">
+  <div class="d-flex justify-content-between">
+    <input
+      type="text"
+      class="form-control float-right col-9 border-white"
+      formControlName="name"
+      (keydown.enter)="onNameChange()"
+    >
+    <button class="btn btn-outline-primary"
+            [hidden]="form.get('name').pristine"
+            (click)="onNameChange()">zapisz zmiany</button>
+  </div>
+
 </form>
 <div class="category-item" *ngFor="let category of readyQuestions.questionnaireData"
      [ngClass]="{'collapsed' : categoriesObj[category.categoryName] !== true}">
@@ -46,7 +52,7 @@
 </div>
 
 
-<div class="btn btn-dark margin10px" (click)="save()">Zapisz</div>
+
 
 <div *ngIf="resultTabsVisible">
   <ul class="nav nav-tabs">
@@ -73,3 +79,10 @@
 
 
 </div>
+
+<footer class="footer">
+  <div class="container d-flex justify-content-between">
+    <button class="btn btn-dark margin10px" (click)="save()">Generuj raport</button>
+    <span class="text-muted">...zapisywanko</span>
+  </div>
+</footer>

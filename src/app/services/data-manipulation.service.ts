@@ -18,7 +18,7 @@ export class DataManipulationService {
 
   public filterAnswers(readyQuestions, states: AnswerState[]) {
     const categoryList = _.cloneDeep(readyQuestions).questionnaireData;
-    const filteredAnswers = categoryList.filter((category) => {
+    return categoryList.filter((category) => {
       category.questionList = category.questionList.filter((question) => {
         question.answerList = question.answerList.filter((answer) => {
           return _.includes(states, answer.control.value);
@@ -30,7 +30,7 @@ export class DataManipulationService {
       return category.questionList.length !== 0;
 
     });
-    return filteredAnswers;
+
 
   }
   public summarizeAnswers(readyQuestions) {
@@ -82,7 +82,7 @@ export class DataManipulationService {
         questionData.answerInputList = question.answerInputs.map(answerInput => {
           return {
             answerInputText: new FormControl(answerInput.answerInputText),
-            control: new FormControl(this.jsonStateToEnum(answerInput.state)),
+            control: new FormControl(AnswerState.Unasked),
 
           };
         });

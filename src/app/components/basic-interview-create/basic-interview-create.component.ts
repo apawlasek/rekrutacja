@@ -1,22 +1,25 @@
-import {Component, OnInit, OnDestroy, Output} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {Subscription} from 'rxjs/Subscription';
 import {Router} from '@angular/router';
 import * as moment from 'moment';
+import {assertNumber} from '@angular/core/src/render3/assert';
 
 @Component({
   selector: 'app-basic-interview-create',
   templateUrl: './basic-interview-create.component.html',
   styleUrls: ['./basic-interview-create.component.scss']
 })
-export class BasicInterviewCreateComponent implements OnInit, OnDestroy {
+export class BasicInterviewCreateComponent implements OnInit, OnDestroy, AfterViewInit {
   public form: FormGroup;
   private formNameSubscription: Subscription;
   @Output() public name;
   @Output() public id;
   public disabled = true;
 
-  public reference = {id: '', name: '', creation: '', modification: ''};
+  @ViewChild('inputName') public inputName;
+
+  public reference = {id: '', name: '', creation: null, modification: null};
 
   constructor(private fb: FormBuilder,
               private router: Router) {
@@ -25,6 +28,10 @@ export class BasicInterviewCreateComponent implements OnInit, OnDestroy {
   public ngOnInit() {
     this.createForm();
     this.setIdAndCreationDate();
+  }
+
+  public ngAfterViewInit() {
+    this.inputName.nativeElement.focus();
   }
 
   public ngOnDestroy(): void {
@@ -45,7 +52,8 @@ export class BasicInterviewCreateComponent implements OnInit, OnDestroy {
   public setIdAndCreationDate() {
     this.reference.id = (+(new Date())).toString(32);
     this.id = this.reference.id;
-    this.reference.creation = moment().format('LLL');
+    this.reference.creation = Date.now();
+    this.reference.modification = Date.now();
   }
 
   public addToReference() {

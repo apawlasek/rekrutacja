@@ -22,5 +22,4 @@ export class SerializedAnswer {
 
 export class AnswerInput {
   public answerInputText: string;
-  public state: boolean;
 }

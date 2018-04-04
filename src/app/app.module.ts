@@ -1,6 +1,6 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
-
+import { MomentModule } from 'angular2-moment';
 
 import 'rxjs/add/observable/empty';
 
@@ -19,7 +19,10 @@ import {NewBasicInterviewResolver} from './routes/new-basic-interview-resolver';
 import {BasicInterviewCreateComponent} from './components/basic-interview-create/basic-interview-create.component';
 import {CurrentStateService} from './services/current-state.service';
 import { TranslateAnswerStatePipe } from './pipes/translate-answer-state.pipe';
+import { LoadConfigurationComponent } from './components/load-configuration/load-configuration.component';
+import * as moment from 'moment';
 
+moment.locale('pl');
 
 @NgModule({
   declarations: [
@@ -30,12 +33,14 @@ import { TranslateAnswerStatePipe } from './pipes/translate-answer-state.pipe';
     BasicInterviewResultComponent,
     ListComponent,
     BasicInterviewCreateComponent,
-    TranslateAnswerStatePipe
+    TranslateAnswerStatePipe,
+    LoadConfigurationComponent
   ],
   imports: [
     BrowserModule,
     ReactiveFormsModule,
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes),
+    MomentModule
   ],
   providers: [
     ApiService,
