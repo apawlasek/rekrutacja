@@ -21,7 +21,7 @@ export class ApiService {
               }
             ],
             answerInputs: [
-              {answerInputText: ''}
+              {answerInputText: '', state: null}
             ]
           },
           {
@@ -32,7 +32,7 @@ export class ApiService {
               {answerText: 'To zależy', 'state': null}
             ],
             answerInputs: [
-              {answerInputText: ''}
+              {answerInputText: '', state: null}
             ]
           },
           {
@@ -43,7 +43,7 @@ export class ApiService {
               {answerText: 'To zależy', 'state': null}
             ],
             answerInputs: [
-              {answerInputText: ''}
+              {answerInputText: '', state: null}
             ]
           },
         ]
@@ -59,7 +59,7 @@ export class ApiService {
               {answerText: 'To zależy', 'state': null}
             ],
             answerInputs: [
-              {answerInputText: ''}
+              {answerInputText: '', state: null}
             ]
           },
           {
@@ -70,7 +70,7 @@ export class ApiService {
               {answerText: 'To zależy', 'state': null}
             ],
             answerInputs: [
-              {answerInputText: ''}
+              {answerInputText: '', state: null}
             ]
           }
         ]
@@ -86,7 +86,7 @@ export class ApiService {
               {answerText: 'To zależy', 'state': null}
             ],
             answerInputs: [
-              {answerInputText: ''}
+              {answerInputText: '', state: null}
             ]
           },
           {
@@ -97,7 +97,7 @@ export class ApiService {
               {answerText: 'To zależy', 'state': null}
             ],
             answerInputs: [
-              {answerInputText: ''}
+              {answerInputText: '', state: null}
             ]
           }
         ]

@@ -21,6 +21,7 @@ import {CurrentStateService} from './services/current-state.service';
 import { TranslateAnswerStatePipe } from './pipes/translate-answer-state.pipe';
 import { LoadConfigurationComponent } from './components/load-configuration/load-configuration.component';
 import * as moment from 'moment';
+import { BasicInterviewPreviewComponent } from './components/basic-interview-preview/basic-interview-preview.component';
 
 moment.locale('pl');
 
@@ -34,7 +35,8 @@ moment.locale('pl');
     ListComponent,
     BasicInterviewCreateComponent,
     TranslateAnswerStatePipe,
-    LoadConfigurationComponent
+    LoadConfigurationComponent,
+    BasicInterviewPreviewComponent
   ],
   imports: [
     BrowserModule,

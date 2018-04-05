@@ -1,0 +1,85 @@
+<div class="category-item" *ngFor="let category of readyQuestions.questionnaireData"
+     [ngClass]="{'collapsed' : categoriesObj[category.categoryName] !== true}">
+  <div class="list-group-item  active border-0 list-dark bg-dark d-flex justify-content-between"
+       (click)="onCollapse(category.categoryName)">
+    <h5 class="mb-0">{{category.categoryName}}</h5>
+    <strong><span class="text-success">{{summarizedAnswers[category.categoryName]?.correct}} </span>/<span
+      class="text-danger"> {{summarizedAnswers[category.categoryName]?.incorrect}}</span> z
+      {{summarizedAnswers[category.categoryName]?.all}}</strong>
+  </div>
+  <div class="list-group-item  question-item" *ngFor="let question of category.questionList">
+    <div class="row">
+      <div class="col-3">
+        {{question.questionText}}
+      </div>
+      <div class="col">
+        <div class="row" *ngFor="let answer of question.answerList">
+          <div class="col-12 bottom-separator">
+            <div class="row">
+              <p class="col">{{answer.answerText}}</p>
+              <div class=" col-5 col-sm-3">
+                <div class=" disabled btn btn-block margin10px"
+                     [ngClass]="{'badge-danger' :  answer.control.value === answerState.Incorrect, 'badge-success' :  answer.control.value === answerState.Correct}">
+                  {{answer.control.value | translateAnswerState}}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <ng-container *ngFor="let answerInput of question.answerInputList">
+          <div class="row" *ngIf="(answerInput.answerInputText.value) !== ''">
+            <div class="col-12 bottom-separator">
+              <div class="row">
+                <span class="col margin10px">{{answerInput.answerInputText.value}}</span>
+                <div class=" col-5 col-sm-3">
+                  <div class="disabled btn btn-block margin10px"
+                       [ngClass]="{'badge-danger' :  answerInput.control.value === answerState.Incorrect, 'badge-success' :  answerInput.control.value === answerState.Correct}">
+                    {{answerInput.control.value | translateAnswerState}}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+
+      </div>
+    </div>
+  </div>
+
+
+</div>
+
+
+<div *ngIf="resultTabsVisible">
+  <ul class="nav nav-tabs">
+    <li class="nav-item ">
+      <span class="nav-link " (click)="setTabTo('all')" [ngClass]="{active: activeTab === 'all'}">Wszystkie</span>
+    </li>
+    <li class="nav-item">
+      <span class="nav-link " (click)="setTabTo('correct')"
+            [ngClass]="{active: activeTab === 'correct'}">Poprawne</span>
+    </li>
+    <li class="nav-item">
+    <span class="nav-link" (click)="setTabTo('incorrect')"
+          [ngClass]="{active: activeTab === 'incorrect'}">Niepoprawne</span>
+    </li>
+  </ul>
+  <app-basic-interview-result *ngIf="activeTab === 'all'"
+                              [options]="{ title: 'Wszystkie', titleColor: '#f4c242', showAnswerState: true }"
+                              [data]="allAnswers"></app-basic-interview-result>
+  <app-basic-interview-result *ngIf="activeTab === 'correct'" [options]="{ title: 'Poprawne', titleColor: '#88f441' }"
+                              [data]="trueAnswers"></app-basic-interview-result>
+  <app-basic-interview-result *ngIf="activeTab === 'incorrect'"
+                              [options]="{ title: 'Niepoprawne', titleColor: '#f44a41' }"
+                              [data]="falseAnswers"></app-basic-interview-result>
+
+
+</div>
+
+<footer class="footer">
+  <div class="container d-flex justify-content-start">
+    <button class="btn btn-dark margin10px" (click)="onResultTabsVisible()">Pokaż raport</button>
+    <button class="btn btn-dark margin10px" [routerLink]="['/basic-interview', id]">Modyfikuj</button>
+    <span class="text-muted">...zapisywanko</span>
+  </div>
+</footer>

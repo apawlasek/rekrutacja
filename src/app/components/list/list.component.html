@@ -29,11 +29,13 @@
   </tr>
   </thead>
   <tbody>
-  <tr *ngFor="let person of references" [routerLink]="['/basic-interview', person.id]">
+  <tr *ngFor="let person of references" >
     <th scope="row" >{{person.name}}</th>
     <td [title]="[person.creation | amDateFormat: 'LLL']">{{person.creation | amDateFormat: 'll'}}</td>
     <td [title]="[person.modification | amDateFormat: 'LLL']">{{person.modification | amDateFormat: 'll'}}</td>
     <td class="d-flex justify-content-between">
+      <button class="btn btn-outline-dark btn-sm" [routerLink]="['/basic-interview', person.id]">modyfikuj</button>
+      <button class="btn btn-outline-dark btn-sm" [routerLink]="['/basic-interview-preview', person.id]">podgląd</button>
       <button class="btn btn-outline-dark btn-sm" (click)="onConfirm($event)" [hidden]="!hideConfiramtionBtns">usuń</button>
       <button class="btn btn-outline-danger btn-sm" (click)="onDelete(person.id)" [hidden]="hideConfiramtionBtns">potwierdź</button>
       <button class="btn btn-outline-info btn-sm" (click)="onConfirm($event)" [hidden]="hideConfiramtionBtns">anuluj</button>

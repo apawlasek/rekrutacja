@@ -2,7 +2,6 @@ import {Injectable, Output} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {AnswerState} from '../models/answer-state';
 import * as _ from 'lodash';
-
 import {ApiService} from './api.service';
 import {SerializedQuestionnaire} from '../models/api.model';
 import {Questionnaire} from '../models/basic-interview.model';
@@ -82,8 +81,7 @@ export class DataManipulationService {
         questionData.answerInputList = question.answerInputs.map(answerInput => {
           return {
             answerInputText: new FormControl(answerInput.answerInputText),
-            control: new FormControl(AnswerState.Unasked),
-
+            control: new FormControl(this.jsonStateToEnum(answerInput.state))
           };
         });
         return questionData;

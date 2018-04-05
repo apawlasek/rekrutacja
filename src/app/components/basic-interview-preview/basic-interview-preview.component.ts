@@ -7,23 +7,21 @@ import {CurrentStateService} from '../../services/current-state.service';
 import {FormBuilder, FormGroup} from '@angular/forms';
 
 @Component({
-  selector: 'app-basic-interview',
-  templateUrl: './basic-interview.component.html',
-  styleUrls: ['./basic-interview.component.scss']
+  selector: 'app-basic-interview-preview',
+  templateUrl: './basic-interview-preview.component.html',
+  styleUrls: ['./basic-interview-preview.component.scss']
 })
-export class BasicInterviewComponent implements OnInit, OnDestroy {
+export class BasicInterviewPreviewComponent implements OnInit, OnDestroy {
   public readyQuestions;
   public allAnswers;
   public trueAnswers;
   public falseAnswers;
   public activeTab = 'all';
-  public autosaveInterval;
   public resultTabsVisible = false;
   public categoriesObj = {};
   public id: string;
   public name: string;
   public summarizedAnswers = {};
-  public form: FormGroup;
   public references;
   public currentPersonReferenceObj;
   public answerState = AnswerState;
@@ -39,13 +37,10 @@ export class BasicInterviewComponent implements OnInit, OnDestroy {
     this.getIdAndName();
     this.loadData();
     this.summarizedAnswers = this.dataManipulationService.summarizeAnswers((this.readyQuestions));
-    this.autosaveInterval = setInterval(() => {
-      this.autoSave();
-    }, 10000);
+    this.serialize();
   }
 
   public ngOnDestroy() {
-    clearInterval(this.autosaveInterval);
     this.currentStateService.setInterviewee('');
   }
 
@@ -61,7 +56,6 @@ export class BasicInterviewComponent implements OnInit, OnDestroy {
 
 
   public loadData() {
-    this.createForm();
     const questionnaireString = localStorage.getItem('questionnaireData_' + this.id);
     if (typeof  questionnaireString === 'string') {
       this.readyQuestions = this.dataManipulationService.loadQuestionnaire(JSON.parse(questionnaireString));
@@ -70,29 +64,6 @@ export class BasicInterviewComponent implements OnInit, OnDestroy {
     }
     this.getCategoriesObj(this.readyQuestions);
     console.log('ready quest', this.readyQuestions.questionnaireData);
-  }
-
-  private createForm(): void {
-    this.form = this.fb.group({
-      name: this.name,
-    });
- }
-
-  public onNameChange() {
-    this.form.get('name').markAsPristine();
-    this.name = this.form.get('name').value;
-    console.log(`this.name `, this.name);
-    this.updateReferences();
-    this.readyQuestions.name = this.name;
-    this.autoSave();
-    this.currentStateService.setInterviewee(this.name);
-  }
-
-  public updateReferences() {
-    this.currentPersonReferenceObj.name = this.name;
-    localStorage.setItem('references', JSON.stringify(this.references));
-
-
   }
 
 
@@ -104,26 +75,9 @@ export class BasicInterviewComponent implements OnInit, OnDestroy {
 
   }
 
-  public autoSave() {
-    const savedQuestions = this.dataManipulationService.saveQuestionnaire(this.readyQuestions);
-    localStorage.setItem('questionnaireData_' + savedQuestions.id, JSON.stringify(savedQuestions));
-    console.log('Questionnaire autosaved!');
-    this.summarizedAnswers = this.dataManipulationService.summarizeAnswers((this.readyQuestions));
-    this.serialize();
-  }
-
   public setTabTo(tabName) {
     this.activeTab = tabName;
   }
-
-  public save() {
-    this.autoSave();
-    this.resultTabsVisible = true;
-    this.currentPersonReferenceObj.modification = Date.now();
-    localStorage.setItem('references', JSON.stringify(this.references));
-
-  }
-
 
   public getCategoriesObj(readyQuestions) {
     const categoryNames = readyQuestions.questionnaireData.map((category) => category.categoryName);
@@ -136,5 +90,9 @@ export class BasicInterviewComponent implements OnInit, OnDestroy {
     this.categoriesObj[category] = !this.categoriesObj[category];
   }
 
+  public onResultTabsVisible() {
+    this.resultTabsVisible = true;
+  }
 
 }
+
