@@ -1,9 +1,16 @@
 import {Injectable} from '@angular/core';
 import {SerializedQuestionnaire} from '../models/api.model';
 import * as _ from 'lodash';
+import {DataManipulationService} from './data-manipulation.service';
 
 @Injectable()
 export class ApiService {
+
+
+  constructor(private dataManipulationService: DataManipulationService) {
+  }
+
+
   private personalData: SerializedQuestionnaire = {
     id: '',
     name: '',
@@ -110,5 +117,59 @@ export class ApiService {
     newData.id = newId;
     newData.name = newName;
     return newData;
+  }
+
+  public loadData(id, name) {
+    const questionnaireString = localStorage.getItem('questionnaireData_' + id);
+    if (typeof  questionnaireString === 'string') {
+      return this.dataManipulationService.loadQuestionnaire(JSON.parse(questionnaireString));
+    } else {
+      return this.dataManipulationService.loadQuestionnaire(this.getData(id, name));
+    }
+  }
+
+  public getData(newId: string, newName: string): SerializedQuestionnaire {
+    return this.getNewInterview(newId, newName);
+  }
+
+
+  public getReferences(): any[] {
+    const references = localStorage.getItem('references');
+    if (typeof references === 'string') {
+      try {
+        return JSON.parse(references);
+      } catch (error) {
+        console.warn(error);
+        return [];
+      }
+    } else {
+      return [];
+    }
+  }
+
+
+  public addToReferences(currentPersonReferenceObj) {
+    const ref = this.getReferences();
+    if (ref !== [] && ref.some(person => person.id === currentPersonReferenceObj.id)) {
+      console.log(`dupa`);
+    } else {
+      ref.push(currentPersonReferenceObj);
+      localStorage.setItem('references', JSON.stringify(ref));
+    }
+  }
+
+
+  public updateReferences(references) {
+    localStorage.setItem('references', JSON.stringify(references));
+
+  }
+
+  public updateQuestionnaireData(savedQuestions) {
+    localStorage.setItem('questionnaireData_' + savedQuestions.id, JSON.stringify(savedQuestions));
+    console.log('Questionnaire autosaved!');
+  }
+
+  public updateQuestionDB(questionDB) {
+
   }
 }

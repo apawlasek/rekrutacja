@@ -12,7 +12,7 @@ export class DataManipulationService {
 
 
 
-  constructor(private apiService: ApiService) {
+  constructor() {
   }
 
   public filterAnswers(readyQuestions, states: AnswerState[]) {
@@ -127,9 +127,6 @@ export class DataManipulationService {
     return serializedData;
   }
 
-  public getData(newId: string, newName: string): SerializedQuestionnaire {
-    return this.apiService.getNewInterview(newId, newName);
-  }
 
   private jsonStateToEnum(state: boolean | null): AnswerState {
     if (state === true) {
@@ -139,6 +136,18 @@ export class DataManipulationService {
     } else {
       return AnswerState.Unasked;
     }
+  }
+
+
+
+
+  public getCategoriesObj(readyQuestions) {
+    const categoriesObj = {};
+    const categoryNames = readyQuestions.questionnaireData.map((category) => category.categoryName);
+    categoryNames.map((categoryName) => {
+      categoriesObj[categoryName] = false;
+    });
+    return categoriesObj;
   }
 
   private enumToJson(answerState: AnswerState) {

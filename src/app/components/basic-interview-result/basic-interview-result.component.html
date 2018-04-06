@@ -1,8 +1,5 @@
-<div *ngIf="data && data.length != 0"><h3 [ngStyle]="{color: options.titleColor}">{{options.title}}</h3>
-  <hr>
-</div>
-<div *ngFor="let category of data">
-  <h4 style="color:dimgrey">{{category.categoryName}}</h4>
+<div *ngFor="let category of data" >
+  <h4 style="color:dimgrey"> <!--[(ngModel)]="copyableText"--> {{category.categoryName}}</h4>
   <hr>
   <div *ngFor="let question of category.questionList">
     <h6>{{question.questionText}}</h6>
@@ -25,4 +22,3 @@
     </ul>
   </div>
 </div>
-

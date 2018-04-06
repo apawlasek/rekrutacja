@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {ApiService} from '../../services/api.service';
 
 @Component({
   selector: 'app-list',
@@ -10,26 +11,12 @@ export class ListComponent implements OnInit {
   public idsFromReferences;
   public hideConfiramtionBtns = true;
 
-  constructor() {
+  constructor(private apiService: ApiService) {
   }
 
   public ngOnInit() {
-    this.references = this.getReferences();
+    this.references = this.apiService.getReferences();
     this.idsFromReferences = this.getIdsFromReferences();
-  }
-
-  public getReferences(): any[] {
-    const references = localStorage.getItem('references');
-    if (typeof references === 'string') {
-      try {
-        return JSON.parse(references);
-      } catch (error) {
-        console.warn(error);
-        return [];
-      }
-    } else {
-      return [];
-    }
   }
 
   public getIdsFromReferences() {
@@ -53,6 +40,6 @@ export class ListComponent implements OnInit {
     references.splice(pos, 1);
     localStorage.setItem('references', JSON.stringify(references));
     console.log('references from localStorage: ', JSON.parse(localStorage.getItem('references')));
-    this.references = this.getReferences();
+    this.references = this.apiService.getReferences();
   }
 }

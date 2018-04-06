@@ -11,7 +11,7 @@ export class TranslateAnswerStatePipe implements PipeTransform {
       case AnswerState.Correct:
         return 'Dobrze';
       case AnswerState.Incorrect:
-        return 'Żle';
+        return 'Źle';
       case AnswerState.Unasked:
         return 'Niezadane';
       default:

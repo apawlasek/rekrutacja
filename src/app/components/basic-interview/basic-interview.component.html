@@ -69,12 +69,12 @@
     </li>
   </ul>
   <app-basic-interview-result *ngIf="activeTab === 'all'"
-                              [options]="{ title: 'Wszystkie', titleColor: '#f4c242', showAnswerState: true }"
+                              [options]="{ title: 'Wszystkie', showAnswerState: true }"
                               [data]="allAnswers"></app-basic-interview-result>
-  <app-basic-interview-result *ngIf="activeTab === 'correct'" [options]="{ title: 'Poprawne', titleColor: '#88f441' }"
+  <app-basic-interview-result *ngIf="activeTab === 'correct'" [options]="{ title: 'Poprawne'}"
                               [data]="trueAnswers"></app-basic-interview-result>
   <app-basic-interview-result *ngIf="activeTab === 'incorrect'"
-                              [options]="{ title: 'Niepoprawne', titleColor: '#f44a41' }"
+                              [options]="{ title: 'Niepoprawne'}"
                               [data]="falseAnswers"></app-basic-interview-result>
 
 

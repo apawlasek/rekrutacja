@@ -1,6 +1,7 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import { MomentModule } from 'angular2-moment';
+import {ClipboardModule} from 'ngx-clipboard';
 
 import 'rxjs/add/observable/empty';
 
@@ -23,6 +24,7 @@ import { LoadConfigurationComponent } from './components/load-configuration/load
 import * as moment from 'moment';
 import { BasicInterviewPreviewComponent } from './components/basic-interview-preview/basic-interview-preview.component';
 
+
 moment.locale('pl');
 
 @NgModule({
@@ -42,7 +44,8 @@ moment.locale('pl');
     BrowserModule,
     ReactiveFormsModule,
     RouterModule.forRoot(appRoutes),
-    MomentModule
+    MomentModule,
+    ClipboardModule
   ],
   providers: [
     ApiService,

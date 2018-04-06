@@ -1,3 +1,5 @@
-<p>
-  load-configuration works!
-</p>
+{{data | json}}
+<input type="file"
+       id="file"
+       accept=".json"
+       (change)="handleFileInput($event.target.files)">
