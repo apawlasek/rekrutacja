@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, DoCheck, OnInit} from '@angular/core';
 import {ApiService} from '../../services/api.service';
 
 @Component({
@@ -6,14 +6,17 @@ import {ApiService} from '../../services/api.service';
   templateUrl: './load-configuration.component.html',
   styleUrls: ['./load-configuration.component.scss']
 })
-export class LoadConfigurationComponent implements OnInit {
+export class LoadConfigurationComponent implements OnInit, DoCheck {
 
-  public data;
-
-  constructor(private apiService: ApiService) {
-  }
+  public questionsDB;
+  public questionsDBMetaData;
+  constructor(private apiService: ApiService) {}
 
   public ngOnInit() {
+    this.loadMetaData();
+  }
+  public ngDoCheck() {
+    this.loadMetaData();
   }
 
   public handleFileInput(files: FileList) {
@@ -21,11 +24,17 @@ export class LoadConfigurationComponent implements OnInit {
     const fileReader = new FileReader();
     fileReader.readAsText(file);
     fileReader.addEventListener('load', (ev: any) => {
-      this.data  = JSON.parse(ev.target.result);
-      this.apiService.updateQuestionDB(this.data);
-      console.log('data', this.data);
+      this.questionsDB  = JSON.parse(ev.target.result);
+      this.apiService.updateQuestionsDB(this.questionsDB);
+      console.log('data', this.questionsDB);
     });
+  }
 
+  public loadMetaData() {
+    this.questionsDBMetaData = this.apiService.getQuestionsDBMetaData();
+  }
 
+  public onRemoveDB() {
+    this.apiService.removeDB();
   }
 }

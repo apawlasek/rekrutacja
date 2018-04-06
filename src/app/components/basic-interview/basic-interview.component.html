@@ -1,17 +1,16 @@
 <form class="margin10px" [formGroup]="form">
-  <div class="d-flex justify-content-between">
-    <input
-      type="text"
-      class="form-control float-right col-9 border-white"
-      formControlName="name"
-      (keydown.enter)="onNameChange()"
-    >
-    <button class="btn btn-outline-primary"
-            [hidden]="form.get('name').pristine"
-            (click)="onNameChange()">zapisz zmiany</button>
+  <div class="input-group mb-3">
+    <input type="text" class="form-control" formControlName="name" aria-label="Recipient's username" aria-describedby="basic-addon2">
+    <div class="input-group-append">
+      <button class="btn btn-outline-secondary" type="button" [hidden]="form.get('name').pristine"
+              (click)="onNameChange()">zapisz zmiany</button>
+    </div>
   </div>
-
 </form>
+
+
+
+
 <div class="category-item" *ngFor="let category of readyQuestions.questionnaireData"
      [ngClass]="{'collapsed' : categoriesObj[category.categoryName] !== true}">
   <div class="list-group-item  active border-0 list-dark bg-dark d-flex justify-content-between"

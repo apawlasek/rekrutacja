@@ -1,15 +1,13 @@
-import {Injectable, Output} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {AnswerState} from '../models/answer-state';
 import * as _ from 'lodash';
-import {ApiService} from './api.service';
 import {SerializedQuestionnaire} from '../models/api.model';
 import {Questionnaire} from '../models/basic-interview.model';
 
 
 @Injectable()
 export class DataManipulationService {
-
 
 
   constructor() {
@@ -32,6 +30,7 @@ export class DataManipulationService {
 
 
   }
+
   public summarizeAnswers(readyQuestions) {
     const categoryList = readyQuestions.questionnaireData;
     const answersSummary = {};
@@ -54,10 +53,48 @@ export class DataManipulationService {
     return answersSummary;
   }
 
-  public loadQuestionnaire(serializedData: SerializedQuestionnaire): Questionnaire {
-      const questionnaire = {
-      id: serializedData.id,
-      name: serializedData.name,
+  public serializeQuestionsDB(questionsDB): SerializedQuestionnaire {
+    console.log('show me your questionsDB', questionsDB);
+    const serializedQuestionsDB = {
+      id: '',
+      name: '',
+      questionnaireData: []
+    };
+    serializedQuestionsDB.questionnaireData = questionsDB.questionnaireData.map((category) => {
+      const categoryData = {
+        categoryName: category.categoryName,
+        questions: []
+      };
+      categoryData.questions = category.questions.map((question) => {
+        const questionData = {
+          questionText: question.questionText,
+          answers: [],
+          answerInputs: []
+        };
+        questionData.answers = question.answers.map((answer) => {
+          return {
+            answerText: answer.answerText,
+            state: null
+          };
+        });
+        questionData.answerInputs = [{
+          answerInputText: '',
+          state: ''
+        }];
+        return questionData;
+      });
+      return categoryData;
+    });
+    console.log(`serializedQuestionsDB just before return`, serializedQuestionsDB);
+    return serializedQuestionsDB;
+  }
+
+
+  public loadQuestionnaire(serializedData: SerializedQuestionnaire, id, name): Questionnaire {
+    console.log('show me your serializedquestionsDB', serializedData);
+    const questionnaire = {
+      id: id,
+      name: name,
       questionnaireData: []
     };
     questionnaire.questionnaireData = serializedData.questionnaireData.map((category) => {
@@ -137,8 +174,6 @@ export class DataManipulationService {
       return AnswerState.Unasked;
     }
   }
-
-
 
 
   public getCategoriesObj(readyQuestions) {
