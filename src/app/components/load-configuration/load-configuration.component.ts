@@ -10,6 +10,8 @@ export class LoadConfigurationComponent implements OnInit, DoCheck {
 
   public questionsDB;
   public questionsDBMetaData;
+  public  hideConfiramtionDBBtns = true;
+
   constructor(private apiService: ApiService) {}
 
   public ngOnInit() {
@@ -34,7 +36,13 @@ export class LoadConfigurationComponent implements OnInit, DoCheck {
     this.questionsDBMetaData = this.apiService.getQuestionsDBMetaData();
   }
 
-  public onRemoveDB() {
+  public onRemoveDB(e) {
+    e.stopPropagation();
+    e.preventDefault();
     this.apiService.removeDB();
+  }
+
+  public onConfirmDB() {
+    this.hideConfiramtionDBBtns = !this.hideConfiramtionDBBtns;
   }
 }

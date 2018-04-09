@@ -1,29 +1,9 @@
-<!--<div class="list-group">-->
-  <!--<p class="list-group-item  active border-0 list-dark bg-dark">-->
-    <!--Lista rozmów:-->
-  <!--</p>-->
-  <!--<div *ngFor="let person of references" class="list-group-item data-flex justify-content-between">-->
-    <!--<a href="#" class="list-group-item-action" [routerLink]="['/basic-interview', person.id]">-->
-      <!--{{person.name}}-->
-    <!--</a>-->
-    <!--<span>data utworzenia: {{person.creation}}</span>-->
-    <!--<span>data modyfikacji:{{person.modification}}</span>-->
-    <!--<span class="data-flex justify-content-between">-->
-
-      <!--<button class="btn btn-outline-dark btn-sm" (click)="onConfirm()" [hidden]="!hideConfiramtionBtns">usuń</button>-->
-      <!--<button class="btn btn-outline-danger btn-sm" (click)="onDelete(person.id)" [hidden]="hideConfiramtionBtns">potwierdź</button>-->
-      <!--<button class="btn btn-outline-info btn-sm" (click)="onConfirm()" [hidden]="hideConfiramtionBtns">anuluj</button>-->
-    <!--</span>-->
-  <!--</div>-->
-<!--</div>-->
-
-
 <table class="table">
   <thead class="thead-dark">
   <tr>
     <th scope="col">Kto?</th>
     <th scope="col">utworzono</th>
-    <th scope="col">ostatnio modyfikowano</th>
+    <th scope="col">modyfikowano</th>
     <th scope="col">zarządzaj</th>
 
   </tr>
@@ -36,13 +16,10 @@
     <td class="d-flex justify-content-between">
       <button class="btn btn-outline-dark btn-sm" [routerLink]="['/basic-interview', person.id]">modyfikuj</button>
       <button class="btn btn-outline-dark btn-sm" [routerLink]="['/basic-interview-preview', person.id]">podgląd</button>
-      <button class="btn btn-outline-dark btn-sm" (click)="onConfirm($event)" [hidden]="!hideConfiramtionBtns">usuń</button>
-      <button class="btn btn-outline-danger btn-sm" (click)="onDelete(person.id)" [hidden]="hideConfiramtionBtns">potwierdź</button>
-      <button class="btn btn-outline-info btn-sm" (click)="onConfirm($event)" [hidden]="hideConfiramtionBtns">anuluj</button>
+      <button class="btn btn-outline-dark btn-sm" id="person.creation" (click)="onConfirm($event, person.id)" [hidden]="confirmationBtnsSummary[person.id]">usuń</button>
+      <button class="btn btn-outline-danger btn-sm" (click)="onDelete(person.id)" [hidden]="!confirmationBtnsSummary[person.id]">usuń</button>
+      <button class="btn btn-outline-info btn-sm" (click)="onConfirm($event, person.id)" [hidden]="!confirmationBtnsSummary[person.id]">anuluj</button>
     </td>
   </tr>
   </tbody>
 </table>
-
-
-<!--<td _ngcontent-c1="" title="4 kwietnia 2018 16:32">4 kwietnia 2018</td>-->

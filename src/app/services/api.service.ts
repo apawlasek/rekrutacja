@@ -197,6 +197,7 @@ export class ApiService {
   public updateQuestionnaireData(savedQuestions) {
     localStorage.setItem('questionnaireData_' + savedQuestions.id, JSON.stringify(savedQuestions));
     console.log('Questionnaire autosaved!');
+
   }
 
   public updateQuestionsDB(questionsDB) {

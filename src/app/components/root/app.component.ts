@@ -7,6 +7,8 @@ import {CurrentStateService} from '../../services/current-state.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+
+  public isCollapsed = true;
   constructor(public currentStateService: CurrentStateService) {
   }
 

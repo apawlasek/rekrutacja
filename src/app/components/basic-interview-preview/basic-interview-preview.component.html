@@ -28,9 +28,9 @@
         </div>
         <ng-container *ngFor="let answerInput of question.answerInputList">
           <div class="row" *ngIf="(answerInput.answerInputText.value) !== ''">
-            <div class="col-12 bottom-separator">
+            <div class="col-12">
               <div class="row">
-                <span class="col margin10px">{{answerInput.answerInputText.value}}</span>
+                <span class="col margin10px ">{{answerInput.answerInputText.value}}</span>
                 <div class=" col-5 col-sm-3">
                   <div class="disabled btn btn-block margin10px"
                        [ngClass]="{'badge-danger' :  answerInput.control.value === answerState.Incorrect, 'badge-success' :  answerInput.control.value === answerState.Correct}">

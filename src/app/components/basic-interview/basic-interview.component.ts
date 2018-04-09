@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, DoCheck, OnChanges, OnDestroy, OnInit} from '@angular/core';
 import {ApiService} from '../../services/api.service';
 import {AnswerState} from '../../models/answer-state';
 import {DataManipulationService} from '../../services/data-manipulation.service';
@@ -11,7 +11,7 @@ import {FormBuilder, FormGroup} from '@angular/forms';
   templateUrl: './basic-interview.component.html',
   styleUrls: ['./basic-interview.component.scss']
 })
-export class BasicInterviewComponent implements OnInit, OnDestroy {
+export class BasicInterviewComponent implements OnInit, OnDestroy, OnChanges {
   public readyQuestions;
   public allAnswers;
   public trueAnswers;
@@ -27,6 +27,7 @@ export class BasicInterviewComponent implements OnInit, OnDestroy {
   public references;
   public currentPersonReferenceObj;
   public answerState = AnswerState;
+  public infoText = '';
 
   constructor(private apiService: ApiService,
               private dataManipulationService: DataManipulationService,
@@ -45,6 +46,10 @@ export class BasicInterviewComponent implements OnInit, OnDestroy {
     this.autosaveInterval = setInterval(() => {
       this.autoSave();
     }, 10000);
+  }
+
+  public ngOnChanges() {
+    this.infoText = '';
   }
 
   public ngOnDestroy() {
@@ -89,6 +94,10 @@ export class BasicInterviewComponent implements OnInit, OnDestroy {
     this.apiService.updateQuestionnaireData(savedQuestions);
     this.summarizedAnswers = this.dataManipulationService.summarizeAnswers((this.readyQuestions));
     this.serialize();
+    this.infoText = 'zapisano!';
+    setTimeout(() => {
+      this.infoText = '';
+    }, 3000);
   }
 
   public setTabTo(tabName) {
@@ -99,7 +108,7 @@ export class BasicInterviewComponent implements OnInit, OnDestroy {
     this.autoSave();
     this.resultTabsVisible = true;
     this.currentPersonReferenceObj.modification = Date.now();
-    this.apiService.updateReferences(this.references);
+ this.apiService.updateReferences(this.references);
   }
 
   public onCollapse(category) {

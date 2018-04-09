@@ -6,10 +6,14 @@
   <ng-container *ngIf="questionsDBMetaData">
     <li class="list-group-item">{{questionsDBMetaData.comment}}</li>
     <li class="list-group-item">Utworzono {{questionsDBMetaData.date | amDateFormat: 'll'}}</li>
-    <li class="list-group-item">
-      <button class="btn btn-outline-dark"(click)="onRemoveDB()">
-        Usuń bazę pytań 🗑️
-      </button></li>
+    <li class="list-group-item btn-outline-dark d-flex justify-content-between" (click)="onConfirmDB()">
+        Usuń bazę pytań ❌
+<div>
+  <button class="btn btn-outline-danger btn-sm" (click)="onRemoveDB($event)" [hidden]="hideConfiramtionDBBtns">usuń</button>
+  <button class="btn btn-outline-info btn-sm" (click)="onConfirm()" [hidden]="hideConfiramtionDBBtns">anuluj</button>
+</div>
+
+    </li>
 
   </ng-container>
   <ng-container *ngIf="!questionsDBMetaData">
@@ -17,24 +21,6 @@
   </ng-container>
 </ul>
 
-<!--<table class="table">-->
-  <!--<thead class="thead-dark">-->
-  <!--<tr>-->
-    <!--<th scope="col">#</th>-->
-    <!--<th scope="col">First</th>-->
-    <!--<th scope="col">Last</th>-->
-    <!--<th scope="col">Handle</th>-->
-  <!--</tr>-->
-  <!--</thead>-->
-  <!--<tbody>-->
-  <!--<tr>-->
-    <!--<th scope="row">1</th>-->
-    <!--<td>Mark</td>-->
-    <!--<td>Otto</td>-->
-    <!--<td>@mdo</td>-->
-  <!--</tr>-->
-  <!--</tbody>-->
-<!--</table>-->
 <br>
 
 <ul class="list-group">

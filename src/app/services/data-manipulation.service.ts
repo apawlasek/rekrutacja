@@ -48,13 +48,23 @@ export class DataManipulationService {
         });
       });
     });
-
     // console.log(this.answersSummary);
     return answersSummary;
   }
 
+  public getConfirmationBtnsKeys(references) {
+    const confirmationBtnsSummary = {};
+    references.forEach(person => {
+      confirmationBtnsSummary[person.id] = false;
+    });
+    return confirmationBtnsSummary;
+  }
+
+  public showConfirmationBtns(confirmationBtnsSummary, id) {confirmationBtnsSummary[id] = !confirmationBtnsSummary[id];
+  return confirmationBtnsSummary;
+  }
+
   public serializeQuestionsDB(questionsDB): SerializedQuestionnaire {
-    console.log('show me your questionsDB', questionsDB);
     const serializedQuestionsDB = {
       id: '',
       name: '',
@@ -91,7 +101,6 @@ export class DataManipulationService {
 
 
   public loadQuestionnaire(serializedData: SerializedQuestionnaire, id, name): Questionnaire {
-    console.log('show me your serializedquestionsDB', serializedData);
     const questionnaire = {
       id: id,
       name: name,

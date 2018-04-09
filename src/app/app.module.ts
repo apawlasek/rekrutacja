@@ -23,7 +23,7 @@ import { TranslateAnswerStatePipe } from './pipes/translate-answer-state.pipe';
 import { LoadConfigurationComponent } from './components/load-configuration/load-configuration.component';
 import * as moment from 'moment';
 import { BasicInterviewPreviewComponent } from './components/basic-interview-preview/basic-interview-preview.component';
-
+import {CollapseModule} from 'ngx-bootstrap/collapse';
 
 moment.locale('pl');
 
@@ -45,7 +45,8 @@ moment.locale('pl');
     ReactiveFormsModule,
     RouterModule.forRoot(appRoutes),
     MomentModule,
-    ClipboardModule
+    ClipboardModule,
+    CollapseModule.forRoot()
   ],
   providers: [
     ApiService,

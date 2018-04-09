@@ -1,5 +1,8 @@
+
+
+
 <div *ngFor="let category of data" >
-  <h4 style="color:dimgrey"> <!--[(ngModel)]="copyableText"--> {{category.categoryName}}</h4>
+  <h4 style="color:dimgrey"> {{category.categoryName}}</h4>
   <hr>
   <div *ngFor="let question of category.questionList">
     <h6>{{question.questionText}}</h6>
@@ -18,7 +21,6 @@
           </span>
         </li>
       </ng-container>
-
     </ul>
   </div>
 </div>

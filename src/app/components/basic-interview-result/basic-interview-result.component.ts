@@ -14,4 +14,6 @@ export class BasicInterviewResultComponent {
     incorrect: 'darkred',
     unasked: 'grey',
   };
+
+
 }

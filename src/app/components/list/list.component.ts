@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ApiService} from '../../services/api.service';
+import {DataManipulationService} from '../../services/data-manipulation.service';
 
 @Component({
   selector: 'app-list',
@@ -9,14 +10,18 @@ import {ApiService} from '../../services/api.service';
 export class ListComponent implements OnInit {
   public references;
   public idsFromReferences;
-  public hideConfiramtionBtns = true;
+  public confirmationBtnsSummary;
 
-  constructor(private apiService: ApiService) {
+  constructor(private apiService: ApiService,
+              private dataManipulationService: DataManipulationService) {
   }
 
   public ngOnInit() {
-    this.references = this.apiService.getReferences();
+    this.references = this.apiService.getReferences().sort(function (a, b) {
+      return b.modification - a.modification;
+    });
     this.idsFromReferences = this.getIdsFromReferences();
+    this.confirmationBtnsSummary = this.dataManipulationService.getConfirmationBtnsKeys(this.references);
   }
 
   public getIdsFromReferences() {
@@ -24,11 +29,12 @@ export class ListComponent implements OnInit {
     return this.references.map((obj) => obj.id);
   }
 
-  public onConfirm(e) {
+  public onConfirm(e, id) {
     e.stopPropagation();
     e.preventDefault();
-    this.hideConfiramtionBtns = !this.hideConfiramtionBtns;
+    this.dataManipulationService.showConfirmationBtns(this.confirmationBtnsSummary, id);
   }
+
   public onDelete(id) {
     localStorage.removeItem('questionnaireData_' + id);
     this.removeFromReference(id);
@@ -36,7 +42,7 @@ export class ListComponent implements OnInit {
 
   public removeFromReference(id) {
     const references = JSON.parse(localStorage.getItem('references'));
-    const pos = references.map((person) =>  person.id).indexOf(id);
+    const pos = references.map((person) => person.id).indexOf(id);
     references.splice(pos, 1);
     localStorage.setItem('references', JSON.stringify(references));
     console.log('references from localStorage: ', JSON.parse(localStorage.getItem('references')));

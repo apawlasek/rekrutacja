@@ -22,10 +22,10 @@
   </div>
   <div class="list-group-item  question-item" *ngFor="let question of category.questionList">
     <div class="row">
-      <div class="col-3">
-        {{question.questionText}}
+      <div class="col-md-3 padding-bottom">
+       <strong> {{question.questionText}} </strong>
       </div>
-      <div class="col">
+      <div class="col-md">
         <div class="row" *ngFor="let answer of question.answerList">
           <div class="col-12 bottom-separator">
             <div class="row">
@@ -35,7 +35,7 @@
           </div>
         </div>
         <div class="row" *ngFor="let answerInput of question.answerInputList">
-          <div class="col-12 bottom-separator">
+          <div class="col-12 margin-bottom">
             <div class="row">
               <app-input-box class="col" [state]="answerInput.answerInputText"></app-input-box>
               <app-tri-state-checkbox class="col-5 col-sm-3" [state]="answerInput.control" [excludedStates]="[answerState.Unasked]"></app-tri-state-checkbox>
@@ -67,6 +67,8 @@
           [ngClass]="{active: activeTab === 'incorrect'}">Niepoprawne</span>
     </li>
   </ul>
+
+
   <app-basic-interview-result *ngIf="activeTab === 'all'"
                               [options]="{ title: 'Wszystkie', showAnswerState: true }"
                               [data]="allAnswers"></app-basic-interview-result>
@@ -82,6 +84,6 @@
 <footer class="footer">
   <div class="container d-flex justify-content-between">
     <button class="btn btn-dark margin10px" (click)="save()">Generuj raport</button>
-    <span class="text-muted">...zapisywanko</span>
+    <span class="text-muted">{{infoText}}</span>
   </div>
 </footer>
