@@ -73,8 +73,12 @@
                               [data]="falseAnswers"></app-basic-interview-result>
 
 
-<footer class="footer">
-  <div class="container d-flex justify-content-start">
+<div class="footer-like-bar">
+  <div class="container d-flex justify-content-between">
+    <div class="d-flex justify-content-start" >
     <button class="btn btn-dark margin10px" [routerLink]="['/basic-interview', id]">Modyfikuj</button>
+    <button class="btn btn-outline-elegant margin10px" (click)="copy('resultToCopy')" >Kopiuj raport do schowka</button>
   </div>
-</footer>
+  <span class="text-muted my-transition" [ngStyle]="{'opacity': zeroOpacity ? '0' : '1'}">{{infoText}}</span>
+  </div>
+</div>

@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {SerializedQuestionnaire} from '../models/api.model';
 import * as _ from 'lodash';
 import {DataManipulationService} from './data-manipulation.service';
+import {Questionnaire} from '../models/basic-interview.model';
 
 @Injectable()
 export class ApiService {
@@ -118,7 +119,7 @@ export class ApiService {
     return newData;
   }
 
-  public loadData(id, name) {
+  public loadData(id, name): Questionnaire {
     const questionnaireString = localStorage.getItem('questionnaireData_' + id);
     if (typeof  questionnaireString === 'string') {
       return this.dataManipulationService.loadQuestionnaire(JSON.parse(questionnaireString), id, name);

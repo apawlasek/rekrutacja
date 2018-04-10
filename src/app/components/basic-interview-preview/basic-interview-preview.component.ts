@@ -23,6 +23,9 @@ export class BasicInterviewPreviewComponent implements OnInit, OnDestroy {
   public references;
   public currentPersonReferenceObj;
   public answerState = AnswerState;
+  public infoText;
+  public zeroOpacity = true;
+
 
   constructor(private apiService: ApiService,
               private dataManipulationService: DataManipulationService,
@@ -67,6 +70,22 @@ export class BasicInterviewPreviewComponent implements OnInit, OnDestroy {
     this.categoriesObj[category] = !this.categoriesObj[category];
   }
 
+  public copy(id) {
+    window.getSelection().selectAllChildren(document.getElementById(id));
+    let copysuccess;
+    try {
+      copysuccess = document.execCommand('copy');
+      window.getSelection().removeAllRanges();
+      this.infoText = 'skopiowano!';
+      this.zeroOpacity = false;
+      setTimeout(() => {
+        this.zeroOpacity = true;
+      }, 3000);
+    } catch (e) {
+      copysuccess = false;
+    }
+    return copysuccess;
+  }
 
 }
 

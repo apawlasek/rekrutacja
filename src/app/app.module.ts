@@ -4,6 +4,7 @@ import { MomentModule } from 'angular2-moment';
 import {ClipboardModule} from 'ngx-clipboard';
 
 import 'rxjs/add/observable/empty';
+import 'rxjs/add/operator/debounceTime';
 
 import {AppComponent} from './components/root/app.component';
 import {BasicInterviewComponent} from './components/basic-interview/basic-interview.component';
@@ -25,6 +26,7 @@ import * as moment from 'moment';
 import { BasicInterviewPreviewComponent } from './components/basic-interview-preview/basic-interview-preview.component';
 import {CollapseModule} from 'ngx-bootstrap/collapse';
 
+
 moment.locale('pl');
 
 @NgModule({
@@ -38,7 +40,8 @@ moment.locale('pl');
     BasicInterviewCreateComponent,
     TranslateAnswerStatePipe,
     LoadConfigurationComponent,
-    BasicInterviewPreviewComponent
+    BasicInterviewPreviewComponent,
+
   ],
   imports: [
     BrowserModule,

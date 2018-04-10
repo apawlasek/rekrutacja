@@ -1,18 +1,19 @@
-import {Component, DoCheck, OnChanges, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, Output} from '@angular/core';
 import {ApiService} from '../../services/api.service';
 import {AnswerState} from '../../models/answer-state';
 import {DataManipulationService} from '../../services/data-manipulation.service';
 import {ActivatedRoute} from '@angular/router';
 import {CurrentStateService} from '../../services/current-state.service';
-import {FormBuilder, FormGroup} from '@angular/forms';
+import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
+import {Questionnaire} from '../../models/basic-interview.model';
 
 @Component({
   selector: 'app-basic-interview',
   templateUrl: './basic-interview.component.html',
   styleUrls: ['./basic-interview.component.scss']
 })
-export class BasicInterviewComponent implements OnInit, OnDestroy, OnChanges {
-  public readyQuestions;
+export class BasicInterviewComponent implements OnInit, OnDestroy {
+  public readyQuestions: Questionnaire;
   public allAnswers;
   public trueAnswers;
   public falseAnswers;
@@ -27,7 +28,8 @@ export class BasicInterviewComponent implements OnInit, OnDestroy, OnChanges {
   public references;
   public currentPersonReferenceObj;
   public answerState = AnswerState;
-  public infoText = '';
+  public infoText;
+  public zeroOpacity = true;
 
   constructor(private apiService: ApiService,
               private dataManipulationService: DataManipulationService,
@@ -41,6 +43,7 @@ export class BasicInterviewComponent implements OnInit, OnDestroy, OnChanges {
     this.getIdAndName();
     this.createForm();
     this.readyQuestions = this.apiService.loadData(this.id, this.name);
+    // this.form.addControl('answers', new FormArray([this.readyQuestions.questionnaireData[0].questionList[0].answerList[0].control]))
     this.categoriesObj = this.dataManipulationService.getCategoriesObj(this.readyQuestions);
     this.summarizedAnswers = this.dataManipulationService.summarizeAnswers((this.readyQuestions));
     this.autosaveInterval = setInterval(() => {
@@ -48,9 +51,6 @@ export class BasicInterviewComponent implements OnInit, OnDestroy, OnChanges {
     }, 10000);
   }
 
-  public ngOnChanges() {
-    this.infoText = '';
-  }
 
   public ngOnDestroy() {
     clearInterval(this.autosaveInterval);
@@ -70,7 +70,12 @@ export class BasicInterviewComponent implements OnInit, OnDestroy, OnChanges {
     this.form = this.fb.group({
       name: this.name,
     });
- }
+
+
+    // this.form.valueChanges.subscribe((data) => {
+    //   console.log(`data`, data);
+    // });
+  }
 
   public onNameChange() {
     this.form.get('name').markAsPristine();
@@ -95,8 +100,11 @@ export class BasicInterviewComponent implements OnInit, OnDestroy, OnChanges {
     this.summarizedAnswers = this.dataManipulationService.summarizeAnswers((this.readyQuestions));
     this.serialize();
     this.infoText = 'zapisano!';
+    this.zeroOpacity = false;
+    console.log('autoSave start');
     setTimeout(() => {
-      this.infoText = '';
+      this.zeroOpacity = true;
+      console.log('autoSave stop');
     }, 3000);
   }
 
@@ -108,11 +116,31 @@ export class BasicInterviewComponent implements OnInit, OnDestroy, OnChanges {
     this.autoSave();
     this.resultTabsVisible = true;
     this.currentPersonReferenceObj.modification = Date.now();
- this.apiService.updateReferences(this.references);
+    this.apiService.updateReferences(this.references);
   }
 
   public onCollapse(category) {
     this.categoriesObj[category] = !this.categoriesObj[category];
+  }
+
+
+  public copy(id) {
+    window.getSelection().selectAllChildren(document.getElementById(id));
+    let copysuccess;
+    try {
+      copysuccess = document.execCommand('copy');
+      window.getSelection().removeAllRanges();
+      this.infoText = 'skopiowano!';
+      this.zeroOpacity = false;
+      console.log('copy start');
+      setTimeout(() => {
+        this.zeroOpacity = true;
+        console.log('copy stop');
+      }, 3000);
+    } catch (e) {
+      copysuccess = false;
+    }
+    return copysuccess;
   }
 
 

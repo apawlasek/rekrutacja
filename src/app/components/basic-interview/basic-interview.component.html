@@ -1,14 +1,14 @@
 <form class="margin10px" [formGroup]="form">
   <div class="input-group mb-3">
-    <input type="text" class="form-control" formControlName="name" aria-label="Recipient's username" aria-describedby="basic-addon2">
+    <input type="text" class="form-control" formControlName="name" aria-label="Recipient's username"
+           aria-describedby="basic-addon2">
     <div class="input-group-append">
       <button class="btn btn-outline-secondary" type="button" [hidden]="form.get('name').pristine"
-              (click)="onNameChange()">zapisz zmiany</button>
+              (click)="onNameChange()">zapisz zmiany
+      </button>
     </div>
   </div>
 </form>
-
-
 
 
 <div class="category-item" *ngFor="let category of readyQuestions.questionnaireData"
@@ -23,7 +23,7 @@
   <div class="list-group-item  question-item" *ngFor="let question of category.questionList">
     <div class="row">
       <div class="col-md-3 padding-bottom">
-       <strong> {{question.questionText}} </strong>
+        <strong> {{question.questionText}} </strong>
       </div>
       <div class="col-md">
         <div class="row" *ngFor="let answer of question.answerList">
@@ -38,7 +38,8 @@
           <div class="col-12 margin-bottom">
             <div class="row">
               <app-input-box class="col" [state]="answerInput.answerInputText"></app-input-box>
-              <app-tri-state-checkbox class="col-5 col-sm-3" [state]="answerInput.control" [excludedStates]="[answerState.Unasked]"></app-tri-state-checkbox>
+              <app-tri-state-checkbox class="col-5 col-sm-3" [state]="answerInput.control"
+                                      [excludedStates]="[answerState.Unasked]"></app-tri-state-checkbox>
             </div>
 
           </div>
@@ -49,8 +50,6 @@
 
 
 </div>
-
-
 
 
 <div *ngIf="resultTabsVisible">
@@ -71,7 +70,8 @@
 
   <app-basic-interview-result *ngIf="activeTab === 'all'"
                               [options]="{ title: 'Wszystkie', showAnswerState: true }"
-                              [data]="allAnswers"></app-basic-interview-result>
+                              [data]="allAnswers"
+                              ></app-basic-interview-result>
   <app-basic-interview-result *ngIf="activeTab === 'correct'" [options]="{ title: 'Poprawne'}"
                               [data]="trueAnswers"></app-basic-interview-result>
   <app-basic-interview-result *ngIf="activeTab === 'incorrect'"
@@ -80,10 +80,13 @@
 
 
 </div>
-
-<footer class="footer">
+<div class="footer-like-bar">
   <div class="container d-flex justify-content-between">
-    <button class="btn btn-dark margin10px" (click)="save()">Generuj raport</button>
-    <span class="text-muted">{{infoText}}</span>
+    <div class="d-flex justify-content-start" >
+      <button class="btn btn-dark margin10px" (click)="save()">Generuj raport</button>
+      <button *ngIf="resultTabsVisible" class="btn btn-outline-elegant margin10px" (click)="copy('resultToCopy')" >Kopiuj raport do schowka</button>
+    </div>
+    <span class="text-muted my-transition" [ngStyle]="{'opacity': zeroOpacity ? '0' : '1'}">{{infoText}}</span>
+
   </div>
-</footer>
+</div>

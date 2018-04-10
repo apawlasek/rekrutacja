@@ -6,13 +6,19 @@
       "categoryName": "JavaScript",
       "questions": [
         {
-          "questionText": "1. Jak zrobić, aby na kliknięcie labelki checkboxa, zaznaczał się dany checkbox?",
+          "questionText": "After i before",
           "answers": [
             {
-              "answerText": "Wie co to jest"
+              "answerText": "pseudoelement"
             },
             {
-              "answerText": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores aspernatur illo minima non quaerat."
+              "answerText": "wewnątrz elementu"
+            },
+            {
+              "answerText": "elementy wizualne"
+            },
+            {
+              "answerText": "wypunktowanie"
             }
           ]
         },

@@ -1,4 +1,4 @@
-import {Component, Input, } from '@angular/core';
+import {Component,  Input} from '@angular/core';
 import {Options} from '../../models/options.model';
 
 @Component({
@@ -9,11 +9,9 @@ import {Options} from '../../models/options.model';
 export class BasicInterviewResultComponent {
   @Input() public data;
   @Input() public options: Options;
-  public colors = {
+    public colors = {
     correct: 'forestgreen',
     incorrect: 'darkred',
     unasked: 'grey',
   };
-
-
 }
