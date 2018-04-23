@@ -60,8 +60,9 @@ export class DataManipulationService {
     return confirmationBtnsSummary;
   }
 
-  public showConfirmationBtns(confirmationBtnsSummary, id) {confirmationBtnsSummary[id] = !confirmationBtnsSummary[id];
-  return confirmationBtnsSummary;
+  public showConfirmationBtns(confirmationBtnsSummary, id) {
+    confirmationBtnsSummary[id] = !confirmationBtnsSummary[id];
+    return confirmationBtnsSummary;
   }
 
   public serializeQuestionsDB(questionsDB): SerializedQuestionnaire {
@@ -174,13 +175,20 @@ export class DataManipulationService {
   }
 
 
-  private jsonStateToEnum(state: boolean | null): AnswerState {
-    if (state === true) {
-      return AnswerState.Correct;
-    } else if (state === false) {
-      return AnswerState.Incorrect;
-    } else {
-      return AnswerState.Unasked;
+  private jsonStateToEnum(answerState: number): AnswerState {
+    switch (answerState) {
+      case 2:
+        return AnswerState.Correct;
+      case 1:
+        return AnswerState.RatherCorrect;
+      case 0:
+        return AnswerState.Unasked;
+      case -1:
+        return AnswerState.RatherIncorrect;
+      case -2:
+        return AnswerState.Incorrect;
+      default:
+        return AnswerState.Unasked;
     }
   }
 
@@ -194,13 +202,20 @@ export class DataManipulationService {
     return categoriesObj;
   }
 
-  private enumToJson(answerState: AnswerState) {
-    if (answerState === AnswerState.Correct) {
-      return true;
-    } else if (answerState === AnswerState.Incorrect) {
-      return false;
-    } else {
-      return null;
+  private enumToJson(answerState: AnswerState): number {
+    switch (answerState) {
+      case AnswerState.Correct:
+        return 2;
+      case AnswerState.RatherCorrect:
+        return 1;
+      case AnswerState.Unasked:
+        return 0;
+      case AnswerState.RatherIncorrect:
+        return -1;
+      case AnswerState.Incorrect:
+        return -2;
+      default:
+        return 0;
     }
   }
 }

@@ -28,17 +28,21 @@
       <div class="col-md">
         <div class="row" *ngFor="let answer of question.answerList">
           <div class="col-12 bottom-separator">
-            <div class="row">
-              <p class="col">{{answer.answerText}}</p>
-              <app-tri-state-checkbox class="col-5 col-sm-3" [state]="answer.control"></app-tri-state-checkbox>
+            <div>
+              {{answer.answerText}}
+            </div>
+            <div>
+              <app-tri-state-checkbox [state]="answer.control"></app-tri-state-checkbox>
             </div>
           </div>
         </div>
         <div class="row" *ngFor="let answerInput of question.answerInputList">
           <div class="col-12 margin-bottom">
-            <div class="row">
-              <app-input-box class="col" [state]="answerInput.answerInputText"></app-input-box>
-              <app-tri-state-checkbox class="col-5 col-sm-3" [state]="answerInput.control"
+            <div>
+              <app-input-box [state]="answerInput.answerInputText"></app-input-box>
+            </div>
+            <div>
+              <app-tri-state-checkbox [state]="answerInput.control"
                                       [excludedStates]="[answerState.Unasked]"></app-tri-state-checkbox>
             </div>
 

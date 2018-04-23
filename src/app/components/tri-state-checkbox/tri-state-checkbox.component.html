@@ -1,9 +1,32 @@
-<div class="btn btn-block btn-sm btn-success" (click)="setState()"
-     *ngIf="state.value === answerState.Correct">{{state.value | translateAnswerState}}
-</div>
-<div class="btn btn-block btn-sm btn-danger" (click)="setState()"
-     *ngIf="state.value === answerState.Incorrect">{{state.value | translateAnswerState}}
-</div>
-<div class="btn btn-block btn-sm btn-outline-info" (click)="setState()"
-     *ngIf="state.value === answerState.Unasked">{{state.value | translateAnswerState}}
+<div class="btn-group">
+  <button
+    class="btn" (click)="setState(answerState.Incorrect)" type="button"
+    [class.btn-danger]="state.value === answerState.Incorrect"
+    [class.btn-outline-danger]="state.value !== answerState.Incorrect"
+  >{{answerState.Incorrect | translateAnswerState}}
+  </button>
+  <button
+    class="btn" (click)="setState(answerState.RatherIncorrect)" type="button"
+    [class.btn-warning]="state.value === answerState.RatherIncorrect"
+    [class.btn-outline-warning]="state.value !== answerState.RatherIncorrect"
+  >{{answerState.RatherIncorrect | translateAnswerState}}
+  </button>
+  <button
+    class="btn" (click)="setState(answerState.Unasked)" type="button"
+    [class.btn-dark]="state.value === answerState.Unasked"
+    [class.btn-outline-dark]="state.value !== answerState.Unasked"
+  >{{answerState.Unasked | translateAnswerState}}
+  </button>
+  <button
+    class="btn" (click)="setState(answerState.RatherCorrect)" type="button"
+    [class.btn-info]="state.value === answerState.RatherCorrect"
+    [class.btn-outline-info]="state.value !== answerState.RatherCorrect"
+  >{{answerState.RatherCorrect | translateAnswerState}}
+  </button>
+  <button
+    class="btn" (click)="setState(answerState.Correct)" type="button"
+    [class.btn-success]="state.value === answerState.Correct"
+    [class.btn-outline-success]="state.value !== answerState.Correct"
+  >{{answerState.Correct | translateAnswerState}}
+  </button>
 </div>

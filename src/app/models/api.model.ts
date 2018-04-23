@@ -17,10 +17,10 @@ export class SerializedQuestion {
 
 export class SerializedAnswer {
   public answerText: string;
-  public state: boolean | null;
+  public state: number;
 }
 
 export class AnswerInput {
   public answerInputText: string;
-  public state: boolean | null;
+  public state: number;
 }

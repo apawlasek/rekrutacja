@@ -1,0 +1,36 @@
+{
+  "date": 1522939222222,
+  "comment": "Pytania Frontendowe 1.0-beta",
+  "questionnaireData": [
+    {
+      "categoryName": "HTML",
+      "questions": [
+        {
+          "questionText": "Czym jest/do czego służy after/before w CSSie?",
+          "answers": [
+            {"answerText": "To pseudoelement"},
+            {"answerText": "Pozwala dodać element z poziomu CSSa/bez wstawiania w HTML"},
+            {"answerText": "Elementy wizualne, ozdobne"},
+            {"answerText": "Ikony/animacje/loadery"},
+            {"answerText": "Wypunktowanie listy, cudzysłowy"}
+          ]
+        },
+        {
+          "questionText": "Czym jest/do czego służy display: flex?",
+          "answers": [
+            {"answerText": "Wyrównywanie/centrowanie elementów w pionie i poziomie"},
+            {"answerText": "Zmiana kolejności elementów"},
+            {"answerText": "Ustawienie, odstępy między elementami, proporcje"}
+          ]
+        },
+        {
+          "questionText": "Różnica między position: relative a absolute",
+          "answers": [
+            {"answerText": "Relative jest ustawieniem względem pierwotnej pozycji"},
+            {"answerText": "Absolute jest ustawieniem względem najbliższego elementu z position inną niż static (a nie okna)"}
+          ]
+        }
+      ]
+    }
+  ]
+}

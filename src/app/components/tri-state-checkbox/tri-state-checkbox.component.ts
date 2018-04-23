@@ -22,20 +22,17 @@ export class TriStateCheckboxComponent implements OnInit {
 
   public ngOnInit() {
     this.allowedStateList = _.difference([
+      AnswerState.Unasked,
+      AnswerState.RatherCorrect,
       AnswerState.Correct,
       AnswerState.Incorrect,
-      AnswerState.Unasked,
+      AnswerState.RatherIncorrect,
     ], this.excludedStates);
   }
 
-  public setState() {
-    let index = _.indexOf(this.allowedStateList, this.state.value);
-    if (index === -1) {
-      index = 0;
-    } else {
-      index = (index + 1) % this.allowedStateList.length;
+  public setState(targetState) {
+    if (_.includes(this.allowedStateList, this.state.value)) {
+      this.state.setValue(targetState);
     }
-
-    this.state.setValue(this.allowedStateList[index]);
   }
 }

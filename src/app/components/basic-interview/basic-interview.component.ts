@@ -1,10 +1,10 @@
-import {Component, OnDestroy, OnInit, Output} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ApiService} from '../../services/api.service';
 import {AnswerState} from '../../models/answer-state';
 import {DataManipulationService} from '../../services/data-manipulation.service';
 import {ActivatedRoute} from '@angular/router';
 import {CurrentStateService} from '../../services/current-state.service';
-import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
+import {FormBuilder, FormGroup} from '@angular/forms';
 import {Questionnaire} from '../../models/basic-interview.model';
 
 @Component({
@@ -89,7 +89,9 @@ export class BasicInterviewComponent implements OnInit, OnDestroy {
   }
 
   public serialize() {
-    this.allAnswers = this.dataManipulationService.filterAnswers(this.readyQuestions, [AnswerState.Correct, AnswerState.Incorrect]);
+    this.allAnswers = this.dataManipulationService.filterAnswers(this.readyQuestions, [
+      AnswerState.Correct, AnswerState.RatherCorrect, AnswerState.RatherIncorrect, AnswerState.Incorrect]
+    );
     this.trueAnswers = this.dataManipulationService.filterAnswers(this.readyQuestions, [AnswerState.Correct]);
     this.falseAnswers = this.dataManipulationService.filterAnswers(this.readyQuestions, [AnswerState.Incorrect]);
   }
